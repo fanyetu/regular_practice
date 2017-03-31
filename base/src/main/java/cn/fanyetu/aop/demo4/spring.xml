@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"  
+    xmlns:context="http://www.springframework.org/schema/context"  
+    xmlns:mvc="http://www.springframework.org/schema/mvc"  
+    xsi:schemaLocation="http://www.springframework.org/schema/beans    
+                        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd    
+                        http://www.springframework.org/schema/context    
+                        http://www.springframework.org/schema/context/spring-context-3.1.xsd    
+                        http://www.springframework.org/schema/mvc    
+                        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">  
+                        
+	<!-- 自动扫描的包 -->
+	<context:component-scan base-package="cn.fanyetu.aop"/>
+	
+	<!-- 配置引入增强 -->
+	<bean id="greetingProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="interfaces" value="cn.fanyetu.aop.Apology"/><!-- 需要动态实现的接口 -->
+		<property name="target" ref="greetingImpl"/><!-- 目标类 -->
+		<property name="interceptorNames" value="greetingIntroAdvice"/><!-- 引入增强 -->
+		
+		<property name="proxyTargetClass" value="true"/><!-- 代理目标类(默认为false，代理接口) -->
+		<!-- false：使用jdk代理，true:使用cglib代理 -->
+	</bean>
+	      
+</beans>
