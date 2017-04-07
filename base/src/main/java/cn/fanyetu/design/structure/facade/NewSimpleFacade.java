@@ -1,19 +1,20 @@
 package cn.fanyetu.design.structure.facade;
 
+import javax.enterprise.inject.New;
+
 /**
- * 外观类
- * <p>
+ * 新的外观类
+ *
  * Created by zhanghaonan on 2017/4/7.
  */
-public class Facade {
-
+public class NewSimpleFacade implements AbstractFacade {
 	private FileReader fileReader;
-	private CipherMachine cipherMachine;
+	private NewCiphreMachine cipherMachine;
 	private FileWriter fileWriter;
 
-	public Facade() {
+	public NewSimpleFacade() {
 		this.fileReader = new FileReader();
-		this.cipherMachine = new CipherMachine();
+		this.cipherMachine = new NewCiphreMachine();
 		this.fileWriter = new FileWriter();
 	}
 

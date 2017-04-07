@@ -6,7 +6,10 @@ package cn.fanyetu.design.structure.facade;
 public class Client {
 
 	public static void main(String[] args) {
-		Facade facade = new Facade();
-		facade.fileEncrypt("d:/source.txt","d:/target.txt");
+		AbstractFacade simpleFacade = new SimpleFacade();
+		simpleFacade.fileEncrypt("d:/source.txt","d:/target.txt");
+
+		AbstractFacade newSimpleFacade = new NewSimpleFacade();
+		newSimpleFacade.fileEncrypt("d:/source.txt","d:/target.txt");
 	}
 }
