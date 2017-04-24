@@ -1,19 +1,16 @@
 package cn.fanyetu.design.behavior.mediator;
 
 /**
- * 具体的中介者类
- *
  * Created by zhanghaonan on 2017/4/24.
  */
-public class ConcreteMediator extends Mediator {
+public class SubConcreteMediator extends ConcreteMediator {
 
-	//维持各个同时对象的引用
-	protected Button button;
-	protected List list;
-	protected TextBox textBox;
-	protected ComboBox comboBox;
+	private Label label;
 
-	//封装各同事对象之间的交互
+	public void setLabel(Label label) {
+		this.label = label;
+	}
+
 	@Override
 	public void componentChange(Component component) {
 		if (component == button){
@@ -21,6 +18,7 @@ public class ConcreteMediator extends Mediator {
 			list.update();
 			textBox.update();
 			comboBox.update();
+			label.update();
 		} else if (component == list){
 			System.out.println("从列表中选择客户");
 			list.select();
@@ -32,21 +30,5 @@ public class ConcreteMediator extends Mediator {
 			list.select();
 			textBox.setText();
 		}
-	}
-
-	public void setButton(Button button) {
-		this.button = button;
-	}
-
-	public void setList(List list) {
-		this.list = list;
-	}
-
-	public void setTextBox(TextBox textBox) {
-		this.textBox = textBox;
-	}
-
-	public void setComboBox(ComboBox comboBox) {
-		this.comboBox = comboBox;
 	}
 }
