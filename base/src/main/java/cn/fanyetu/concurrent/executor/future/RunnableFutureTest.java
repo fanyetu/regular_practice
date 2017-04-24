@@ -1,4 +1,4 @@
-package cn.fanyetu.concurrent.future;
+package cn.fanyetu.concurrent.executor.future;
 
 import java.util.concurrent.*;
 
