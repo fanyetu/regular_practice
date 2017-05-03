@@ -5,14 +5,14 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
 /**
- * Êä³ö·şÎñÆ÷
+ * è¾“å‡ºæœåŠ¡å™¨
  * @author zhanghaonan
  *
  */
 public class EchoServerHandler extends ChannelInboundHandlerAdapter{
 	
 	/**
-	 * Êä³ö¿Í»§¶ËÊäÈëµÄÄÚÈİ
+	 * è¾“å‡ºå®¢æˆ·ç«¯è¾“å…¥çš„å†…å®¹
 	 */
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
