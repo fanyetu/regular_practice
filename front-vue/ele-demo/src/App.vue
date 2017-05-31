@@ -1,23 +1,25 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <router-view></router-view>
+    <vheader></vheader>
+    <div class="tab">
+      i am tab
+    </div>
+    <div class="content">
+      i am content
+    </div>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'app'
-}
+  import vheader from './components/header/header.vue'
+
+  export default {
+    name: 'app',
+    components: {
+      vheader
+    }
+  }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>

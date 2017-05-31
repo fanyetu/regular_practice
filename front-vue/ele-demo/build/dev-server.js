@@ -23,6 +23,40 @@ var autoOpenBrowser = !!config.dev.autoOpenBrowser
 var proxyTable = config.dev.proxyTable
 
 var app = express()
+
+/**
+ * 模拟后端的api接口
+ */
+var appData = require('../data.json');
+var seller = appData.seller;
+var goods = appData.goods;
+var ratings = appData.ratings;
+
+var appRoutes = express.Router();
+
+appRoutes.get('/seller',function (req, resp) {
+  resp.json({
+    errno:0,
+    data:seller
+  })
+})
+
+appRoutes.get('/goods',function (req, resp) {
+  resp.json({
+    errno:0,
+    data:goods
+  })
+})
+
+appRoutes.get('/ratings',function (req, resp) {
+  resp.json({
+    errno:0,
+    data:ratings
+  })
+})
+
+app.use('/api',appRoutes);
+
 var compiler = webpack(webpackConfig)
 
 var devMiddleware = require('webpack-dev-middleware')(compiler, {
