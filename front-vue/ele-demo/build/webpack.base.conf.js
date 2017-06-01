@@ -21,12 +21,14 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
-      '@': resolve('src')
+      '@': resolve('src'),
+      // 配置components别名
+      'components': path.resolve(__dirname,'../src/components')
     }
   },
   module: {
     rules: [
-      //关闭eslint
+      // 关闭eslint
       /*{
         test: /\.(js|vue)$/,
         loader: 'eslint-loader',

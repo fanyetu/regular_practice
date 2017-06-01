@@ -1,8 +1,13 @@
-import Vue from 'vue';
-import Router from 'vue-router';
+import Vue from 'vue'
+import Router from 'vue-router'
+import goods from 'components/goods/goods'
 
-Vue.use(Router);
+// 使用router插件
+Vue.use(Router)
 
 export default new Router({
-  routes: []
-});
+  routes: [{
+    path:'/goods',
+    component:goods
+  }]
+})
