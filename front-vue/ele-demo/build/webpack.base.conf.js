@@ -23,7 +23,8 @@ module.exports = {
     alias: {
       '@': resolve('src'),
       // 配置components别名
-      'components': path.resolve(__dirname,'../src/components')
+      'components': path.resolve(__dirname,'../src/components'),
+      'common':path.resolve(__dirname,'../src/common')
     }
   },
   module: {

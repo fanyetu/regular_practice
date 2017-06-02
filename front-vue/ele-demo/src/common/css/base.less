@@ -1,0 +1,27 @@
+body, html {
+  line-height: 1;
+  font-weight: 200;
+  font-family: 'PingFang SC',Arial;
+}
+
+/**
+通过media设置不同的dpi客户端的after的缩放
+ */
+@media (-webkit-min-device-pixel-ratio: 1.5),(min-device-pixel-ratio: 1.5) {
+  .border-1px {
+    &::after, &::before {
+      -webkit-transform: scaleY(0.7);
+      transform: scaleY(0.7);
+    }
+  }
+}
+
+@media (-webkit-min-device-pixel-ratio: 2),(min-device-pixel-ratio: 2) {
+  .border-1px {
+    &::after, &::before {
+      -webkit-transform: scaleY(0.5);
+      transform: scaleY(0.5);
+    }
+  }
+}
+
