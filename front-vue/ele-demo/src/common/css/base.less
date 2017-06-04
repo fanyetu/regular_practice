@@ -5,6 +5,21 @@ body, html {
 }
 
 /**
+清除浮动(通用的)
+ */
+.clear-fix{
+  display: inline-block;
+  &:after{
+    display: block;
+    content: '.';
+    height: 0;
+    line-height: 0;
+    clear: both;
+    visibility: hidden;
+  }
+}
+
+/**
 通过media设置不同的dpi客户端的after的缩放
  */
 @media (-webkit-min-device-pixel-ratio: 1.5),(min-device-pixel-ratio: 1.5) {
