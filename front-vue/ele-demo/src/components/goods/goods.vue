@@ -18,7 +18,7 @@
         <li v-for="item in goods" class="food-list food-list-hook">
           <h1 class="title">{{item.name}}</h1>
           <ul>
-            <li v-for="food in item.foods" class="food-item">
+            <li v-for="food in item.foods" class="food-item" @click="selectFood(food,$event)">
               <div class="icon">
                 <img width="57" :src="food.icon"/>
               </div>
@@ -46,19 +46,22 @@
               :min-price="seller.minPrice"
               :select-foods="selectFoods"
               ref="shopcart"></shopcart>
+    <food :food="selectedFood" ref="food" @cart-add="_drop"></food>
   </div>
 </template>
 <script type="text/ecmascript-6">
   import BScroll from 'better-scroll';
   import shopcart from 'components/shopcart/shopcart';
   import cartcontrol from 'components/cartcontrol/cartcontrol';
+  import food from 'components/food/food';
 
   const ERR_OK = 0;
 
   export default{
     components: {
       shopcart,
-      cartcontrol
+      cartcontrol,
+      food
     },
     props: {
       seller: {
@@ -70,7 +73,8 @@
         goods: [],
         //每个区间的高度
         listHeights: [],
-        scrollY: 0
+        scrollY: 0,
+        selectedFood: {}
       }
     },
     created(){
@@ -104,7 +108,7 @@
         let foods = [];
         this.goods.forEach((good) => {
           good.foods.forEach((food) => {
-            if (food.count){//food.count在cartcontrol中设置
+            if (food.count) {//food.count在cartcontrol中设置
               foods.push(food);//找到所有被选中的food
             }
           })
@@ -113,10 +117,17 @@
       }
     },
     methods: {
+      selectFood(food, event){
+        if (!event._constructed) {
+          return;
+        }
+        this.selectedFood = food;
+        this.$refs.food.show();
+      },
       //监听cartcontrol组件触发的事件
       _drop(target){
         // 体验优化，异步调用下落动画
-        this.$nextTick(()=>{
+        this.$nextTick(() => {
           //通过ref获取子组件，调用其drop方法
           this.$refs.shopcart.drop(target);
         });
