@@ -115,8 +115,11 @@
     methods: {
       //监听cartcontrol组件触发的事件
       _drop(target){
-        //通过ref获取子组件，调用其drop方法
-        this.$refs.shopcart.drop(target);
+        // 体验优化，异步调用下落动画
+        this.$nextTick(()=>{
+          //通过ref获取子组件，调用其drop方法
+          this.$refs.shopcart.drop(target);
+        });
       },
       selectMenu(index, event) {
         //vue的v-bind中传入$event，其中better-scroll的event中_constructed为true，而浏览器原生事件没有
