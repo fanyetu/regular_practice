@@ -34,7 +34,8 @@
                 </div>
               </div>
               <div class="cartcontrol-wrapper">
-                <cartcontrol :food="food"></cartcontrol>
+                <!--通过v-on监听子组件传递的自定义事件-->
+                <cartcontrol :food="food" v-on:cart-add="_drop"></cartcontrol>
               </div>
             </li>
           </ul>
@@ -42,7 +43,9 @@
       </ul>
     </div>
     <shopcart :delivery-price="seller.deliveryPrice"
-      :min-price="seller.minPrice"></shopcart>
+              :min-price="seller.minPrice"
+              :select-foods="selectFoods"
+              ref="shopcart"></shopcart>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -53,7 +56,7 @@
   const ERR_OK = 0;
 
   export default{
-    components:{
+    components: {
       shopcart,
       cartcontrol
     },
@@ -96,9 +99,25 @@
           }
         }
         return 0;
+      },
+      selectFoods(){
+        let foods = [];
+        this.goods.forEach((good) => {
+          good.foods.forEach((food) => {
+            if (food.count){//food.count在cartcontrol中设置
+              foods.push(food);//找到所有被选中的food
+            }
+          })
+        });
+        return foods;
       }
     },
     methods: {
+      //监听cartcontrol组件触发的事件
+      _drop(target){
+        //通过ref获取子组件，调用其drop方法
+        this.$refs.shopcart.drop(target);
+      },
       selectMenu(index, event) {
         //vue的v-bind中传入$event，其中better-scroll的event中_constructed为true，而浏览器原生事件没有
         //_constructed
@@ -116,6 +135,7 @@
           click: true
         });
         this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {
+          click: true,
           probeType: 3//让bscroll实时返回滚动的位置
         });
         this.foodsScroll.on("scroll", (pos) => {
@@ -263,6 +283,11 @@
               color: rgb(147, 153, 159);
             }
           }
+        }
+        .cartcontrol-wrapper {
+          position: absolute;
+          right: 0;
+          bottom: 12px;
         }
       }
     }
