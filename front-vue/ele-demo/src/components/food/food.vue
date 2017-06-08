@@ -33,7 +33,24 @@
         <split></split>
         <div class="rating">
           <h1 class="title">商品评价</h1>
-          <ratingselect></ratingselect>
+          <ratingselect :select-type="selectType" :only-content="onlyContent"
+                        :desc="desc" :ratings="food.ratings"></ratingselect>
+          <div class="rating-wrapper">
+            <ul v-show="food.ratings && food.ratings.length">
+              <li class="rating-item" v-for="rating in food.ratings">
+                <div class="user">
+                  <div class="name">{{rating.username}}</div>
+                  <img class="avatar" width="12" height="12" :src="rating.avatar">
+                </div>
+                <div class="time">{{rating.rateTime}}</div>
+                <div class="text">
+                  <span
+                    :class="{'icon-thumb_up':rating.rateType===0,'icon-thumb_down':rating.rateType===1}">{{rating.text}}</span>
+                </div>
+              </li>
+            </ul>
+            <div class="no-rating" v-show="!food.ratings || !food.ratings.length"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -46,10 +63,21 @@
   import split from 'components/split/split';
   import ratingselect from 'components/ratingselect/ratingselect';
 
+  const POSITIVE = 0;
+  const NEGATIVE = 1;
+  const ALL = 2;
+
   export default{
     data(){
       return {
-        showFlag: false
+        showFlag: false,
+        selectType: ALL,
+        onlyContent: true,
+        desc: {
+          all: '全部',
+          positive: '推荐',
+          negative: '吐槽'
+        }
       }
     },
     components: {
@@ -63,6 +91,12 @@
       }
     },
     methods: {
+      toggleContent(flag){
+        this.onlyContent = flag;
+      },
+      changeSelectType(type){
+        this.selectType = type;
+      },
       addFirst(event){
         if (!event._constructed) {
           return;
@@ -72,6 +106,10 @@
       },
       show(){
         this.showFlag = true;
+        //初始化属性
+        this.selectType = ALL;
+        this.onlyContent = true;
+
         this.$nextTick(() => {
           if (!this.scroll) {
             this.scroll = new BScroll(this.$refs.food, {
@@ -205,6 +243,15 @@
         padding: 0 8px;
         font-size: 12px;
         color: rgb(77, 85, 93);
+      }
+    }
+    .rating {
+      padding-top: 18px;
+      .title {
+        line-height: 14px;
+        margin-left: 18px;
+        font-size: 14px;
+        color: rgb(7, 17, 27);
       }
     }
   }
