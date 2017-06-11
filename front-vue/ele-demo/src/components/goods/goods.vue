@@ -46,7 +46,7 @@
               :min-price="seller.minPrice"
               :select-foods="selectFoods"
               ref="shopcart"></shopcart>
-    <food :food="selectedFood" ref="food" @cart-add="_drop"></food>
+    <food :food="selectedFood" ref="food" @cart-add="_drop" @cart-drop="_drop"></food>
   </div>
 </template>
 <script type="text/ecmascript-6">
