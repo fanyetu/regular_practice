@@ -19,7 +19,7 @@
             <span class="now">￥{{food.price}}</span><span v-show="food.oldPrice" class="old">￥{{food.oldPrice}}</span>
           </div>
           <div class="cartcontrol-wrapper">
-            <cartcontrol :food="food" @cart-add="drop"></cartcontrol>
+            <cartcontrol :food="food" @cart-add="addFood"></cartcontrol>
           </div>
           <transition name="fade">
             <div @click.stop.prevent="addFirst" class="buy" v-show="!food.count || food.count === 0">加入购物车</div>
@@ -100,11 +100,8 @@
       }
     },
     methods: {
-      drop(event){
-        if (!event._constructed) {
-          return;
-        }
-        this.$emit('cart-drop', event.target);
+      addFood(target){
+        this.$emit('cart-add', target);
       },
       contentToggle(onlyContent){
         this.onlyContent = onlyContent;
