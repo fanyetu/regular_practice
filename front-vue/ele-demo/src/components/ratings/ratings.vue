@@ -27,10 +27,13 @@
       </div>
       <split></split>
       <ratingselect :ratings="ratings" :selectType="selectType"
-                    :onlyContent="onlyContent"></ratingselect>
+                    :onlyContent="onlyContent"
+                    @content-toggle="contentToggle"
+                    @ratingtype-select="typeSelect"></ratingselect>
       <div class="rating-wrapper">
         <ul>
-          <li v-for="rating in ratings" class="rating-item">
+          <li v-for="rating in ratings" class="rating-item"
+              v-show="needShow(rating.rateType,rating.text)">
             <div class="avatar">
               <img width="28" height="28" :src="rating.avatar">
             </div>
@@ -42,8 +45,8 @@
                       class="delivery">{{rating.deliveryTime}}分钟</span>
               </div>
               <p class="text">{{rating.text}}</p>
-              <div class="recommend" v-show="rating.recommend && rating.recommend.length">
-                <span class="icon-thumb_up"></span>
+              <div class="recommend">
+                <span :class="{'icon-thumb_up':rating.rateType===0,'icon-thumb_down':rating.rateType===1}"></span>
                 <span class="item" v-for="item in rating.recommend">{{item}}</span>
               </div>
               <div class="time">
@@ -79,6 +82,30 @@
         onlyContent: true
       }
     },
+    methods: {
+      contentToggle(){
+        this.onlyContent = !this.onlyContent;
+        this.$nextTick(() => {
+          this.scroll.refresh();
+        });
+      },
+      typeSelect(type){
+        this.selectType = type;
+        this.$nextTick(() => {
+          this.scroll.refresh();
+        });
+      },
+      needShow(type, text){
+        if (this.onlyContent && !text) {
+          return false;
+        }
+        if (this.selectType === ALL) {
+          return true;
+        } else {
+          return type === this.selectType;
+        }
+      }
+    },
     created(){
       this.$http.get('api/ratings').then((resp) => {
         resp = resp.body;
@@ -106,6 +133,8 @@
   }
 </script>
 <style lang="less">
+  @import "../../common/css/mixin";
+
   .ratings {
     position: absolute;
     top: 174px;
@@ -188,6 +217,84 @@
             vertical-align: top;
             font-size: 12px;
             line-height: 18px;
+            color: rgb(147, 153, 159);
+          }
+        }
+      }
+    }
+    .rating-wrapper {
+      padding: 0 18px;
+      .rating-item {
+        display: flex;
+        padding: 18px 0;
+        .bottom-border-1px(rgba(7, 17, 27, 0.1));
+        .avatar {
+          flex: 0 0 28px;
+          width: 28px;
+          margin-right: 12px;
+          img {
+            border-radius: 50%;
+          }
+        }
+        .content {
+          flex: 1;
+          position: relative;
+          .name {
+            margin-bottom: 4px;
+            line-height: 12px;
+            font-size: 10px;
+            color: rgb(7, 17, 27);
+          }
+          .star-wrapper {
+            margin-bottom: 6px;
+            font-size: 0;
+            .star {
+              display: inline-block;
+              margin-right: 6px;
+              vertical-align: top;
+            }
+            .delivery {
+              display: inline-block;
+              vertical-align: top;
+              line-height: 12px;
+              font-size: 10px;
+              color: rgb(147, 153, 159);
+            }
+          }
+          .text {
+            margin-bottom: 8px;
+            line-height: 18px;
+            color: rgb(7, 17, 27);
+            font-size: 12px;
+          }
+          .recommend {
+            line-height: 16px;
+            font-size: 0;
+            .icon-thumb_up, .icon-thumb_down, .item {
+              display: inline-block;
+              margin: 0 8px 4px 0;
+              font-size: 9px;
+            }
+            .icon-thumb_down {
+              color: rgb(183, 187, 191);
+            }
+            .icon-thumb_up {
+              color: rgb(0, 160, 220);
+            }
+            .item {
+              padding: 0 6px;
+              border: 1px solid rgba(7, 17, 27, 0.1);
+              border-radius: 1px;
+              color: rgb(147, 153, 159);
+              background: #fff;
+            }
+          }
+          .time {
+            position: absolute;
+            top: 0;
+            right: 0;
+            line-height: 12px;
+            font-size: 10px;
             color: rgb(147, 153, 159);
           }
         }
