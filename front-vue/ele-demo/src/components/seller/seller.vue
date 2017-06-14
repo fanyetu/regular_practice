@@ -34,11 +34,13 @@
           <span class="text">已收藏</span>
         </div>
       </div>
+      <split></split>
     </div>
   </div>
 </template>
 <script type="text/ecmascript-6">
   import star from 'components/star/star';
+  import split from 'components/split/split';
 
   export default{
     props: {
@@ -47,7 +49,8 @@
       }
     },
     components: {
-      star
+      star,
+      split
     }
   }
 </script>
