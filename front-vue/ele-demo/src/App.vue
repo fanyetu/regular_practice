@@ -20,6 +20,7 @@
 
 <script>
   import vheader from 'components/header/header.vue'
+  import {urlParse} from 'common/js/util';
 
   const ERR_OK = 0;
 
@@ -27,14 +28,20 @@
     name: 'app',
     data(){
       return {
-        seller: {}
+        seller: {
+          id: (() => {
+            let queryParam = urlParse();
+            return queryParam.id;
+          })()
+        }
       }
     },
     created(){
-      this.$http.get('/api/seller').then((resp) => {
+      this.$http.get('/api/seller?id='+this.seller.id).then((resp) => {
         resp = resp.body;//通过body属性取到返回的内容
         if (resp.errno === ERR_OK) {
-          this.seller = resp.data
+//          this.seller = resp.data
+          this.seller = Object.assign({},this.seller,resp.data);
         }
       })
     },
