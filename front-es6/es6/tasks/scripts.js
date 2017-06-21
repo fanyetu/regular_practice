@@ -12,38 +12,31 @@ import {log,colors} from 'gulp-util';
 import args from './util/args';
 
 gulp.task('scripts',()=>{
-    return gulp.src(['app/js/index.js'])//打开文件
-        .pipe(plumber({//统一处理gulp的pipe错误处理逻辑
-            errorHandle:function () {
-                
-            }
-        }))
-        .pipe(named())//对文件命名
-        .pipe(gulpWebpack({//webpack编译设置
-            module:{
-                loaders:[{
-                    test:/\.js$/,
-                    loader:'babel'
-                }]
-            }
-        }),null,(err,stats)=>{//webpack错误处理
-            log(`Finished ${colors.cyan('scripts')}`,stats.toString({
-                chunks:false
-            }))
-        })
-        .pipe(gulp.dest('server/public/js'))//将编译好的文件存储
-        .pipe(rename({//新复制一份.min.js
-            basename:'cp',
-            extname:'.min.js'
-        }))
-        .pipe(uglify({//对复制的minjs进行压缩
-            compress:{
-                properties:false
-            },
-            output:{
-                'quote_keys':true
-            }
-        }))
-        .pipe(gulp.dest('server/public/js'))//将压缩的js文件存储
-        .pipe(gulpif(args.watch,livereload()))//如果传入的命令参数watch为true，那么热更新
+  return gulp.src(['app/js/index.js'])
+    .pipe(plumber({
+      errorHandle:function(){
+
+      }
+    }))
+    .pipe(named())
+    .pipe(gulpWebpack({
+      module:{
+        loaders:[{
+          test:/\.js$/,
+          loader:'babel'
+        }]
+      }
+    }),null,(err,stats)=>{
+      log(`Finished '${colors.cyan('scripts')}'`,stats.toString({
+        chunks:false
+      }))
+    })
+    .pipe(gulp.dest('server/public/js'))
+    .pipe(rename({
+      basename:'cp',
+      extname:'.min.js'
+    }))
+    .pipe(uglify({compress:{properties:false},output:{'quote_keys':true}}))
+    .pipe(gulp.dest('server/public/js'))
+    .pipe(gulpif(args.watch,livereload()))
 })
