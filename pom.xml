@@ -25,6 +25,7 @@
         <druid.version>1.0.18</druid.version>
         <netty.version>4.1.8.Final</netty.version>
         <cglib.version>2.2.2</cglib.version>
+        <quartz.version>2.2.3</quartz.version>
     </properties>
 
     <!-- 用到的jar包 -->
@@ -263,6 +264,12 @@
             <groupId>cglib</groupId>
             <artifactId>cglib</artifactId>
             <version>${cglib.version}</version>
+        </dependency>
+        <!--引入quartz-->
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+            <version>${quartz.version}</version>
         </dependency>
     </dependencies>
 
