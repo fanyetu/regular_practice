@@ -10,6 +10,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>base</module>
+        <module>back-eb</module>
     </modules>
 
     <!-- 用来设置版本号 -->
