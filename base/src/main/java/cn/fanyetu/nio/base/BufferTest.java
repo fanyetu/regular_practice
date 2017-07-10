@@ -56,6 +56,7 @@ public class BufferTest {
         System.out.println(buf.limit());
         System.out.println(buf.capacity());
 
+        //设置读模式
         buf.flip();
         System.out.println("============flip()");
         System.out.println(buf.position());
