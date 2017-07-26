@@ -2,7 +2,9 @@
   <div id="app">
     <m-header></m-header>
     <tab></tab>
-    <router-view></router-view>
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
   </div>
 </template>
 
@@ -10,8 +12,8 @@
   import MHeader from 'components/m-header/m-header'
   import Tab from 'components/tab/tab'
 
-  export default{
-    components:{
+  export default {
+    components: {
       MHeader,
       Tab
     }
