@@ -20,6 +20,7 @@
           <ul>
             <li v-for="item in discList" class="item">
               <div class="icon">
+                <!--使用vue-lazyload插件的v-lazy指令-->
                 <img v-lazy="item.imgurl" width="60" height="60"/>
               </div>
               <div class="text">
