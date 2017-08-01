@@ -1,7 +1,9 @@
 <!-- create by zhanghaonan 2017/7/23 -->
 <template>
   <div class="singer">
-    <listview :data="singers"></listview>
+    <listview :data="singers" @select="selectSinger"></listview>
+    <!--定义子路由的入口-->
+    <router-view></router-view>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -9,6 +11,7 @@
   import {ERR_OK} from 'api/config'
   import Singer from 'common/js/singer'
   import listview from 'base/listview/listview'
+  import {mapMutations} from 'vuex' // 使用vuex提供的对象扩展函数
 
   const HOT_NAME = '热门'
   const HOT_SINGER_LEN = 10
@@ -26,6 +29,13 @@
       this._getSingerList()
     },
     methods: {
+      ...mapMutations({
+        setSinger: 'SET_SINGER' // 这里就是将mutations中的SET_SINGER这个操作映射到这里，实际上是执行了store.commit
+      }),
+      selectSinger(singer) {
+        this.$router.push(`/singer/${singer.id}`)
+        this.setSinger(singer)
+      },
       _getSingerList() {
         getSingerList().then((resp) => {
           if (resp.code === ERR_OK) {
