@@ -7,15 +7,38 @@
 </template>
 <script type="text/ecmascript-6">
   import {mapGetters} from 'vuex'
+  import {getSingerDetail} from 'api/singer'
+  import {ERR_OK} from 'api/config'
 
   export default {
+    data() {
+      return {
+        songs: []
+      }
+    },
     computed: {
       ...mapGetters([
         'singer' // 将vuex中的getter映射到计算属性中
       ])
     },
     created() {
+      this._getDetail()
       console.log(this.singer)
+    },
+    methods: {
+      _getDetail() {
+        if (!this.singer.id) { // 如果从vuex中没有获取到singer，那么就直接回退到singer
+          this.$router.push('/singer')
+        }
+        getSingerDetail(this.singer.id).then((resp) => {
+          if (resp.code === ERR_OK) {
+            console.log(resp.data.list)
+          }
+        })
+      },
+      _normalizeSongs(list) {
+
+      }
     }
   }
 </script>
