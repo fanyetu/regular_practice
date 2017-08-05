@@ -43,3 +43,41 @@ export function getData(el, name, val) {
     return el.getAttribute(name)
   }
 }
+
+// 用于检测当前浏览器支持的前缀
+let elementStype = document.createElement('div').style
+
+let vendor = (() => {
+  let transformNames = {
+    webkit: 'webkitTransform',
+    Moz: 'MozTransform',
+    O: 'OTransform',
+    ms: 'msTransform',
+    standard: 'transform'
+  }
+
+  for (let key in transformNames) {
+    if (elementStype[transformNames[key]] !== undefined) {
+      return key
+    }
+  }
+
+  return false
+})()
+
+/**
+ * 为样式名加上浏览器前缀
+ * @param style
+ * @returns {*}
+ */
+export function prefixStyle(style) {
+  if (vendor === false) {
+    return false
+  }
+
+  if (vendor === 'standard') {
+    return style
+  }
+
+  return vendor + style.charAt(0).toUpperCase() + style.substr(1)
+}
