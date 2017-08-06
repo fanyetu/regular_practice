@@ -19,7 +19,8 @@
     <scroll :data="songs" class="list" ref="list" @scroll="scroll"
             :probe-type="probeType" :listen-scroll="listenScroll">
       <div class="song-list-wrapper"><!--控制内部样式-->
-        <song-list :songs="songs"></song-list>
+        <!--监听song-list组件的select事件-->
+        <song-list :songs="songs" @select="selectItem"></song-list>
       </div>
       <div class="loading-container" v-show="!songs.length">
         <loading></loading>
@@ -32,6 +33,7 @@
   import SongList from 'base/song-list/song-list'
   import {prefixStyle} from 'common/js/dom'
   import Loading from 'base/loading/loading'
+  import {mapActions} from 'vuex'
 
   const RESERVED_HEIGHT = 40
   const transform = prefixStyle('transform')
@@ -72,11 +74,20 @@
       }
     },
     methods: {
+      ...mapActions([
+        'selectPlay'
+      ]),
       scroll(pos) {
         this.scrollY = pos.y
       },
-      back(){
+      back() {
         this.$router.back()
+      },
+      selectItem(item, index) {
+        this.selectPlay({ // 调用vuex的action
+          list: this.songs,
+          index: index
+        })
       }
     },
     watch: {
