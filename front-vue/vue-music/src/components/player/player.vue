@@ -6,7 +6,7 @@
         <img width="100%" height="100%" :src="currentSong.image"/>
       </div>
       <div class="top">
-        <div class="back">
+        <div class="back" @click="back">
           <i class="icon-back"></i>
         </div>
         <h1 class="title" v-html="currentSong.name"></h1>
@@ -41,13 +41,13 @@
         </div>
       </div>
     </div>
-    <div class="min-player" v-show="!fullScreen">
+    <div class="mini-player" v-show="!fullScreen" @click="open">
       <div class="icon">
-        <img width="40" height="40"/>
+        <img width="40" height="40" :src="currentSong.image"/>
       </div>
       <div class="text">
-        <h2 class="name"></h2>
-        <p class="desc"></p>
+        <h2 class="name" v-html="currentSong.name"></h2>
+        <p class="desc" v-html="currentSong.singer"></p>
       </div>
       <div class="control"></div>
       <div class="control">
@@ -66,6 +66,18 @@
         'playList',
         'currentSong'
       ])
+    },
+    methods: {
+      back() {
+        this.setFullScreen(false) // 设置为不是全屏
+      },
+      open() {
+        this.setFullScreen(true) // 设置全屏
+      },
+      // 使用mutations修改fullScreen属性
+      ...mapMutations({
+        setFullScreen: 'SET_FULL_SCREEN'
+      })
     }
   }
 </script>
@@ -172,5 +184,45 @@
             text-align left
           .icon-favorite
             color $color-sub-theme
+    .mini-player
+      display flex
+      align-items center
+      position fixed
+      left 0
+      bottom 0
+      z-index 180
+      width 100%
+      height 60px
+      background $color-highlight-background
+      .icon
+        flex 0 0 40px
+        width 40px
+        padding 0 10px 0 20px
+        img
+          border-radius 50%
+      .text
+        display flex
+        flex 1
+        flex-direction column
+        justify-content center
+        line-height 20px
+        overflow hidden
+        .name
+          margin-bottom 2px
+          no-wrap()
+          font-size $font-size-medium
+          color $color-text
+        .desc
+          no-wrap()
+          font-size $font-size-small
+          color $color-text-d
+      .control
+        flex 0 0 30px
+        width 30px
+        padding 0 10px
+        .icon-playlist
+          font-size 30px
+          color $color-theme-d
+
   /*.test*/
 </style>
