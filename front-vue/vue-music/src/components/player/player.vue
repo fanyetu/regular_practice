@@ -1,7 +1,8 @@
 <!-- create by zhanghaonan 2017/8/6 -->
 <template>
   <div class="player" v-show="playList.length > 0">
-    <transition name="normal">
+    <transition name="normal" @enter="enter"
+                @after-enter="afterEnter" @leave="leave" @after-leave="afterLeave">
       <div class="normal-player" v-show="fullScreen">
         <div class="background">
           <img width="100%" height="100%" :src="currentSong.image"/>
@@ -15,8 +16,8 @@
         </div>
         <div class="middle">
           <div class="middle-l">
-            <div class="cd-wrapper">
-              <div class="cd">
+            <div class="cd-wrapper" ref="cdWrapper">
+              <div class="cd" :class="cdClass">
                 <img class="image" :src="currentSong.image"/>
               </div>
             </div>
@@ -31,7 +32,7 @@
               <i class="icon-prev"></i>
             </div>
             <div class="icon i-center">
-              <i class="icon-play"></i>
+              <i @click="togglePlaying" :class="playIcon"></i>
             </div>
             <div class="icon i-right">
               <i class="icon-next"></i>
@@ -46,42 +47,139 @@
     <transition name="mini">
       <div class="mini-player" v-show="!fullScreen" @click="open">
         <div class="icon">
-          <img width="40" height="40" :src="currentSong.image"/>
+          <img :class="cdClass" width="40" height="40" :src="currentSong.image"/>
         </div>
         <div class="text">
           <h2 class="name" v-html="currentSong.name"></h2>
           <p class="desc" v-html="currentSong.singer"></p>
         </div>
-        <div class="control"></div>
+        <div class="control">
+          <i :class="playMiniIcon" @click.stop="togglePlaying"></i>
+        </div>
         <div class="control">
           <i class="icon-playlist"></i>
         </div>
       </div>
     </transition>
+    <audio :src="currentSong.url" ref="audio"></audio>
   </div>
 </template>
 <script type="text/ecmascript-6">
   import {mapGetters, mapMutations} from 'vuex'
+  import animations from 'create-keyframe-animation' // 使用这个包实现js的css3动画
+  import {prefixStyle} from 'common/js/dom'
+
+  const transform = prefixStyle('transform')
 
   export default {
     computed: {
+      cdClass() {
+        return this.playing ? 'play' : 'play pause'
+      },
+      playIcon() {
+        return this.playing ? 'icon-pause' : 'icon-play'
+      },
+      playMiniIcon() {
+        return this.playing ? 'icon-pause-mini' : 'icon-play-mini'
+      },
       ...mapGetters([
         'fullScreen',
         'playList',
-        'currentSong'
+        'currentSong',
+        'playing'
       ])
     },
     methods: {
+      togglePlaying() {
+        this.setPlaying(!this.playing) // 修改当前的playing状态
+      },
       back() {
         this.setFullScreen(false) // 设置为不是全屏
       },
       open() {
         this.setFullScreen(true) // 设置全屏
       },
+      // vue transition提供的enter事件
+      enter(el, done) {
+        const {x, y, scale} = this._getPosAndScale()
+
+        // 创建动画
+        let animation = {
+          0: {
+            transform: `translate3d(${x}px,${y}px,0) scale(${scale})`
+          },
+          60: {
+            transform: `translate3d(0,0,0) scale(1.1)`
+          },
+          100: {
+            transform: `translate3d(0,0,0) scale(1)`
+          }
+        }
+
+        // 注册动画
+        animations.registerAnimation({
+          name: 'move',
+          animation,
+          presets: {
+            duration: 400,
+            easing: 'linear'
+          }
+        })
+
+        // 执行动画，第一个参数是需要执行动画的dom，第二个参数是动画的名称，第三个参数的回调
+        animations.runAnimation(this.$refs.cdWrapper, 'move', done) // 调用done完成transition的过程
+      },
+      afterEnter(el) {
+        // 完成enter之后，清除动画
+        animations.unregisterAnimation('move')
+        this.$refs.cdWrapper.style.animation = ''
+      },
+      leave(el, done) {
+        const {x, y, scale} = this._getPosAndScale()
+
+        // 直接使用transition实现
+        this.$refs.cdWrapper.style.transition = 'all 0.4s'
+        this.$refs.cdWrapper.style[transform] = `translate3d(${x}px,${y}px,0) scale(${scale})`
+
+        // 添加transitionend的监听事件，完成时调用done
+        this.$refs.cdWrapper.addEventListener('transitionend', done)
+      },
+      afterLeave(el) {
+        this.$refs.cdWrapper.style.transition = ''
+        this.$refs.cdWrapper.style[transform] = ''
+      },
+      // 计算
+      _getPosAndScale() {
+        const targetWidth = 40 // 底部小唱片的宽度
+        const paddingLeft = 20 + targetWidth / 2 // 底部小唱片的中心距left
+        const paddingBottom = 10 + targetWidth / 2 // 底部小唱片的中心距bottom
+        const sourceWidth = window.innerWidth * 0.8 // 中部大唱片的宽度
+        const paddingTop = 80 + sourceWidth / 2 // 中部大唱片的中心距top
+        const scale = targetWidth / sourceWidth // 底部小唱片的缩放比例
+        const x = -(window.innerWidth / 2 - paddingLeft) // 中部移动到底部的x差值
+        const y = window.innerHeight - paddingTop - paddingBottom // 中部移动到底部的y差值
+        return {
+          x, y, scale
+        }
+      },
       // 使用mutations修改fullScreen属性
       ...mapMutations({
-        setFullScreen: 'SET_FULL_SCREEN'
+        setFullScreen: 'SET_FULL_SCREEN',
+        setPlaying: 'SET_PLAYING'
       })
+    },
+    watch: {
+      currentSong: function () {
+        this.$nextTick(() => {
+          this.$refs.audio.play()
+        })
+      },
+      playing: function (newPlaying) { // 监听vuex的playing状态
+        const audio = this.$refs.audio
+        this.$nextTick(() => {
+          newPlaying ? audio.play() : audio.pause()
+        })
+      }
     }
   }
 </script>
@@ -159,6 +257,10 @@
               box-sizing border-box
               border 10px solid rgba(255, 255, 255, 0.1)
               border-radius 50%
+              &.play
+                animation rotate 20s linear infinite
+              &.pause
+                animation-play-state paused
               .image
                 position absolute
                 left 0
@@ -215,6 +317,10 @@
         padding 0 10px 0 20px
         img
           border-radius 50%
+          &.play
+            animation rotate 10s linear infinite
+          &.pause
+            animation-play-state paused
       .text
         display flex
         flex 1
@@ -235,7 +341,7 @@
         flex 0 0 30px
         width 30px
         padding 0 10px
-        .icon-playlist
+        .icon-play-mini, .icon-pause-mini, .icon-playlist
           font-size 30px
           color $color-theme-d
 
@@ -243,6 +349,12 @@
         transition all 0.4s
       &.mini-enter, &.mini-leave-to
         opacity 0
+
+  @keyframes rotate
+    0%
+      transform rotate(0)
+    100%
+      transform rotate(360deg)
 
   /*.test*/
 </style>
