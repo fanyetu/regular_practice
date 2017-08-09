@@ -24,18 +24,25 @@
           </div>
         </div>
         <div class="bottom">
+          <div class="progress-wrapper">
+            <span class="time time-l">{{formatTime(currentTime)}}</span>
+            <div class="progress-bar-wrapper">
+              <progress-bar></progress-bar>
+            </div>
+            <span class="time time-r">{{formatTime(currentSong.duration)}}</span>
+          </div>
           <div class="operators">
             <div class="icon i-left">
               <i class="icon-sequence"></i>
             </div>
-            <div class="icon i-left">
-              <i class="icon-prev"></i>
+            <div class="icon i-left" :class="disableClass">
+              <i class="icon-prev" @click="prev"></i>
             </div>
-            <div class="icon i-center">
+            <div class="icon i-center" :class="disableClass">
               <i @click="togglePlaying" :class="playIcon"></i>
             </div>
-            <div class="icon i-right">
-              <i class="icon-next"></i>
+            <div class="icon i-right" :class="disableClass">
+              <i class="icon-next" @click="next"></i>
             </div>
             <div class="icon i-right">
               <i class="icon icon-not-favorite"></i>
@@ -61,17 +68,30 @@
         </div>
       </div>
     </transition>
-    <audio :src="currentSong.url" ref="audio"></audio>
+    <!--监听audio的canplay事件和error事件，防止用户快速切换歌曲-->
+    <!--监听audio的timeupdate事件，获取audio的currentTime-->
+    <audio :src="currentSong.url" ref="audio" @canplay="ready" @error="error"
+           @timeupdate="updateTime"></audio>
   </div>
 </template>
 <script type="text/ecmascript-6">
   import {mapGetters, mapMutations} from 'vuex'
   import animations from 'create-keyframe-animation' // 使用这个包实现js的css3动画
   import {prefixStyle} from 'common/js/dom'
+  import ProgressBar from 'base/progress-bar/progress-bar'
 
   const transform = prefixStyle('transform')
 
   export default {
+    data() {
+      return {
+        songReady: false,
+        currentTime: 0
+      }
+    },
+    components:{
+      ProgressBar
+    },
     computed: {
       cdClass() {
         return this.playing ? 'play' : 'play pause'
@@ -82,15 +102,59 @@
       playMiniIcon() {
         return this.playing ? 'icon-pause-mini' : 'icon-play-mini'
       },
+      disableClass() {
+        return this.songReady ? '' : 'disable'
+      },
       ...mapGetters([
         'fullScreen',
         'playList',
         'currentSong',
-        'playing'
+        'playing',
+        'currentIndex'
       ])
     },
     methods: {
+      updateTime(e) {
+        this.currentTime = e.target.currentTime // audio标签有一个currentTime属性，是可读写的，表示当前播放时间
+      },
+      ready() {
+        this.songReady = true
+      },
+      error() {
+        this.songReady = true
+      },
+      prev() {
+        if (!this.songReady) {
+          return
+        }
+        let index = this.currentIndex - 1
+        if (index === -1) {
+          index = this.playList.length - 1
+        }
+        this.setCurrentIndex(index)
+        if (!this.playing) {
+          this.togglePlaying()
+        }
+        this.songReady = false
+      },
+      next() {
+        if (!this.songReady) { // 如果当前歌曲还没有准备完成就直接return
+          return
+        }
+        let index = this.currentIndex + 1
+        if (index === this.playList.length) {
+          index = 0
+        }
+        this.setCurrentIndex(index)
+        if (!this.playing) {
+          this.togglePlaying()
+        }
+        this.songReady = false
+      },
       togglePlaying() {
+        if (!this.songReady) {
+          return
+        }
         this.setPlaying(!this.playing) // 修改当前的playing状态
       },
       back() {
@@ -148,7 +212,23 @@
         this.$refs.cdWrapper.style.transition = ''
         this.$refs.cdWrapper.style[transform] = ''
       },
-      // 计算
+      // 格式化currentTime
+      formatTime(interval) {
+        interval = interval | 0 // 向下取整
+        let m = interval / 60 | 0
+        let s = this._pad(interval % 60)
+        return `${m}:${s}`
+      },
+      // 对数字进行补0操作
+      _pad(num, n = 2) {
+        let len = num.toString().length
+        while (len < n) {
+          num = '0' + num
+          len++
+        }
+        return num
+      },
+      // 计算唱片动画的位置
       _getPosAndScale() {
         const targetWidth = 40 // 底部小唱片的宽度
         const paddingLeft = 20 + targetWidth / 2 // 底部小唱片的中心距left
@@ -165,7 +245,8 @@
       // 使用mutations修改fullScreen属性
       ...mapMutations({
         setFullScreen: 'SET_FULL_SCREEN',
-        setPlaying: 'SET_PLAYING'
+        setPlaying: 'SET_PLAYING',
+        setCurrentIndex: 'SET_CURRENT_INDEX'
       })
     },
     watch: {
@@ -279,6 +360,8 @@
           .icon
             flex 1
             color $color-theme
+            &.disable
+              color: $color-theme-d
             i
               font-size 30px
           .i-left
