@@ -27,7 +27,7 @@
           <div class="progress-wrapper">
             <span class="time time-l">{{formatTime(currentTime)}}</span>
             <div class="progress-bar-wrapper">
-              <progress-bar></progress-bar>
+              <progress-bar :percent="percent" @percentChange="onProgressBarChange"></progress-bar>
             </div>
             <span class="time time-r">{{formatTime(currentSong.duration)}}</span>
           </div>
@@ -61,7 +61,9 @@
           <p class="desc" v-html="currentSong.singer"></p>
         </div>
         <div class="control">
-          <i :class="playMiniIcon" @click.stop="togglePlaying"></i>
+          <progress-circle :radius="radius" :percent="percent">
+            <i :class="playMiniIcon" @click.stop="togglePlaying" class="icon-mini"></i>
+          </progress-circle>
         </div>
         <div class="control">
           <i class="icon-playlist"></i>
@@ -79,6 +81,7 @@
   import animations from 'create-keyframe-animation' // 使用这个包实现js的css3动画
   import {prefixStyle} from 'common/js/dom'
   import ProgressBar from 'base/progress-bar/progress-bar'
+  import ProgressCircle from 'base/progress-circle/progress-circle'
 
   const transform = prefixStyle('transform')
 
@@ -86,11 +89,13 @@
     data() {
       return {
         songReady: false,
-        currentTime: 0
+        currentTime: 0,
+        radius: 32
       }
     },
-    components:{
-      ProgressBar
+    components: {
+      ProgressBar,
+      ProgressCircle
     },
     computed: {
       cdClass() {
@@ -105,6 +110,9 @@
       disableClass() {
         return this.songReady ? '' : 'disable'
       },
+      percent() {
+        return this.currentTime / this.currentSong.duration
+      },
       ...mapGetters([
         'fullScreen',
         'playList',
@@ -114,6 +122,10 @@
       ])
     },
     methods: {
+      // 监听progressbar的percentchange事件
+      onProgressBarChange(percent) {
+        this.$refs.audio.currentTime = this.currentSong.duration * percent
+      },
       updateTime(e) {
         this.currentTime = e.target.currentTime // audio标签有一个currentTime属性，是可读写的，表示当前播放时间
       },
@@ -354,6 +366,24 @@
         position absolute
         bottom 50px
         width 100%
+        .progress-wrapper
+          display flex
+          width 80%
+          margin 0 auto
+          align-items center
+          padding 10px 0
+          .time
+            width 30px
+            flex 0 0 30px
+            color $color-text
+            font-size $font-size-small
+            line-height 30px
+            &.time-l
+              text-align left
+            &.time-r
+              text-align right
+          .progress-bar-wrapper
+            flex 1
         .operators
           display flex
           align-items center
@@ -427,6 +457,11 @@
         .icon-play-mini, .icon-pause-mini, .icon-playlist
           font-size 30px
           color $color-theme-d
+        .icon-mini
+          position absolute
+          font-size 32px
+          top 0
+          left 0
 
       &.mini-enter-active, &.mini-leave-active
         transition all 0.4s
