@@ -33,7 +33,7 @@
           </div>
           <div class="operators">
             <div class="icon i-left">
-              <i class="icon-sequence"></i>
+              <i :class="iconMode" @click="changeMode"></i>
             </div>
             <div class="icon i-left" :class="disableClass">
               <i class="icon-prev" @click="prev"></i>
@@ -82,6 +82,7 @@
   import {prefixStyle} from 'common/js/dom'
   import ProgressBar from 'base/progress-bar/progress-bar'
   import ProgressCircle from 'base/progress-circle/progress-circle'
+  import {playMode} from 'common/js/config'
 
   const transform = prefixStyle('transform')
 
@@ -98,6 +99,10 @@
       ProgressCircle
     },
     computed: {
+      iconMode() {
+        return this.mode === playMode.sequence ? 'icon-sequence' : this.mode === playMode.loop ?
+          'icon-loop' : 'icon-random'
+      },
       cdClass() {
         return this.playing ? 'play' : 'play pause'
       },
@@ -118,10 +123,15 @@
         'playList',
         'currentSong',
         'playing',
-        'currentIndex'
+        'currentIndex',
+        'mode'
       ])
     },
     methods: {
+      changeMode() {
+        let mode = (this.mode + 1) % 3
+        this.setMode(mode)
+      },
       // 监听progressbar的percentchange事件
       onProgressBarChange(percent) {
         this.$refs.audio.currentTime = this.currentSong.duration * percent
@@ -258,7 +268,8 @@
       ...mapMutations({
         setFullScreen: 'SET_FULL_SCREEN',
         setPlaying: 'SET_PLAYING',
-        setCurrentIndex: 'SET_CURRENT_INDEX'
+        setCurrentIndex: 'SET_CURRENT_INDEX',
+        setMode: 'SET_MODE'
       })
     },
     watch: {
