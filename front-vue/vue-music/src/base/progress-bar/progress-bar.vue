@@ -33,8 +33,10 @@
     methods: {
       // 点击progressBar的时候跳转
       progressClick(e){
-        // TODO 点击progressBtn的时候有问题
-        this._offset(e.offsetX)
+        let rect = this.$refs.progressBar.getBoundingClientRect()
+        const offsetWidth = e.pageX - rect.left
+        this._offset(offsetWidth)
+//        this._offset(e.offsetX)
         this._triggerPercent()
       },
       touchStart(e) {

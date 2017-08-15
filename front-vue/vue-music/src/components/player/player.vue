@@ -72,8 +72,9 @@
     </transition>
     <!--监听audio的canplay事件和error事件，防止用户快速切换歌曲-->
     <!--监听audio的timeupdate事件，获取audio的currentTime-->
+    <!--监听audio的ended事件，当歌曲播放结束后，跳转到下一首歌-->
     <audio :src="currentSong.url" ref="audio" @canplay="ready" @error="error"
-           @timeupdate="updateTime"></audio>
+           @timeupdate="updateTime" @ended="end"></audio>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -83,6 +84,7 @@
   import ProgressBar from 'base/progress-bar/progress-bar'
   import ProgressCircle from 'base/progress-circle/progress-circle'
   import {playMode} from 'common/js/config'
+  import {shuffle} from 'common/js/util'
 
   const transform = prefixStyle('transform')
 
@@ -124,13 +126,47 @@
         'currentSong',
         'playing',
         'currentIndex',
-        'mode'
+        'mode',
+        'sequenceList'
       ])
     },
     methods: {
+      // 歌曲播放结束后切换歌曲
+      end() {
+        if (this.mode === playMode.loop) {
+          this.loop();
+        } else {
+          this.next();
+        }
+      },
+      // 当为循环播放模式时执行
+      loop() {
+        this.$refs.audio.currentTime = 0;
+        this.$refs.audio.play()
+      },
+      // 切换播放模式
       changeMode() {
         let mode = (this.mode + 1) % 3
         this.setMode(mode)
+
+        let list = null
+        if (this.mode === playMode.random) {
+          list = shuffle(this.sequenceList)
+        } else {
+          list = this.sequenceList
+        }
+
+        this._resetCurrentIndex(list)
+        this.setPlayList(list)
+      },
+      // 当修改playList的时候，修改当前的currentIndex，达到不跳转歌曲的目的
+      _resetCurrentIndex(list) {
+        // findIndex是es6的函数
+        let index = list.findIndex((item) => {
+          return item.id === this.currentSong.id
+        })
+
+        this.setCurrentIndex(index)
       },
       // 监听progressbar的percentchange事件
       onProgressBarChange(percent) {
@@ -269,11 +305,15 @@
         setFullScreen: 'SET_FULL_SCREEN',
         setPlaying: 'SET_PLAYING',
         setCurrentIndex: 'SET_CURRENT_INDEX',
-        setMode: 'SET_MODE'
+        setMode: 'SET_MODE',
+        setPlayList: 'SET_PLAY_LIST'
       })
     },
     watch: {
-      currentSong: function () {
+      currentSong: function (newSong, oldSong) {
+        if (newSong.id === oldSong.id) {
+          return
+        }
         this.$nextTick(() => {
           this.$refs.audio.play()
         })
