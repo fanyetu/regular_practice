@@ -22,6 +22,15 @@
               </div>
             </div>
           </div>
+          <scroll class="middle-r" :data="currentLyric && currentLyric.lines" ref="lyricList">
+            <div class="lyric-wrapper">
+              <div v-if="currentLyric">
+                <p class="text" :class="{'current':currentLineNum === index}"
+                   ref="lyricLine"
+                   v-for="(item,index) in currentLyric.lines">{{item.txt}}</p>
+              </div>
+            </div>
+          </scroll>
         </div>
         <div class="bottom">
           <div class="progress-wrapper">
@@ -85,6 +94,8 @@
   import ProgressCircle from 'base/progress-circle/progress-circle'
   import {playMode} from 'common/js/config'
   import {shuffle} from 'common/js/util'
+  import Lyric from 'lyric-parser' // 歌词处理工具包
+  import Scroll from 'base/scroll/scroll'
 
   const transform = prefixStyle('transform')
 
@@ -93,12 +104,15 @@
       return {
         songReady: false,
         currentTime: 0,
-        radius: 32
+        radius: 32,
+        currentLyric: null, // 当前歌曲的歌词
+        currentLineNum: 0 // 当前歌词行数
       }
     },
     components: {
       ProgressBar,
-      ProgressCircle
+      ProgressCircle,
+      Scroll
     },
     computed: {
       iconMode() {
@@ -131,6 +145,25 @@
       ])
     },
     methods: {
+      getLyric() {
+        this.currentSong.getLyric().then((lyric) => {
+          this.currentLyric = new Lyric(lyric, this.lyricHandler)
+          if (this.playing) {
+            this.currentLyric.play()
+          }
+        })
+      },
+      lyricHandler({lineNum, txt}) {
+        this.currentLineNum = lineNum
+        // 大于5行之后，滚动scroll，保持当前歌词在中间
+        console.log(lineNum)
+        if (lineNum > 5) {
+          let lyricEl = this.$refs.lyricLine[lineNum - 5]
+          this.$refs.lyricList.scrollToElement(lyricEl, 1000)
+        } else {
+          this.$refs.lyricList.scrollTo(0, 0, 1000)
+        }
+      },
       // 歌曲播放结束后切换歌曲
       end() {
         if (this.mode === playMode.loop) {
@@ -316,6 +349,7 @@
         }
         this.$nextTick(() => {
           this.$refs.audio.play()
+          this.getLyric()
         })
       },
       playing: function (newPlaying) { // 监听vuex的playing状态
@@ -412,7 +446,23 @@
                 width 100%
                 height 100%
                 border-radius 50%
-
+        .middle-r
+          display inline-block
+          vertical-align top
+          height 100%
+          width 100%
+          overflow hidden
+          .lyric-wrapper
+            width 80%
+            margin 0 auto
+            overflow hidden
+            text-align center
+            .text
+              line-height 32px
+              color $color-text-l
+              font-size $font-size-medium
+              &.current
+                color $color-text
       .bottom
         position absolute
         bottom 50px

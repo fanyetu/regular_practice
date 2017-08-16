@@ -1,3 +1,7 @@
+import {getLyric} from "api/song"
+import {ERR_OK} from "api/config"
+import {Base64} from 'js-base64'
+
 /**
  * 歌曲类
  *
@@ -14,6 +18,28 @@ export default class Song {
     this.duration = duration
     this.image = image
     this.url = url
+  }
+
+  /**
+   * 获取歌词
+   * @return {*}
+   */
+  getLyric() {
+    if (this.lyric) {
+      return Promise.resolve(this.lyric)
+    }
+
+    return new Promise((resovle, reject) => {
+      getLyric(this.mid).then((resp) => {
+        if (resp.retcode === ERR_OK) {
+          this.lyric = Base64.decode(resp.lyric)
+          resovle(this.lyric)
+        } else {
+          reject('no lyric')
+        }
+      })
+    })
+
   }
 
 }
