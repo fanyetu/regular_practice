@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import rank from 'components/rank/rank'
-import recommend from 'components/recommend/recommend'
-import search from 'components/search/search'
-import singer from 'components/singer/singer'
-import singerDetail from 'components/singer-detail/singer-detail'
+import Rank from 'components/rank/rank'
+import Recommend from 'components/recommend/recommend'
+import Search from 'components/search/search'
+import Singer from 'components/singer/singer'
+import SingerDetail from 'components/singer-detail/singer-detail'
+import Disc from 'components/disc/disc'
 
 // 在vue中注册router
 Vue.use(Router)
@@ -18,24 +19,30 @@ export default new Router({
     },
     {
       path: '/rank',
-      component: rank
+      component: Rank
     },
     {
       path: '/recommend',
-      component: recommend
+      component: Recommend,
+      children: [
+        {
+          path: ':id',
+          component: Disc
+        }
+      ]
     },
     {
       path: '/search',
-      component: search
+      component: Search
     },
     {
       path: '/singer',
-      component: singer,
+      component: Singer,
       // 为singer下面配置子路由
       children: [
         {
           path: ':id', // :id代表动态的参数
-          component: singerDetail
+          component: SingerDetail
         }
       ]
     }

@@ -10,7 +10,8 @@ export const commonParams = {
 }
 
 export const options = {
-  param: 'jsonpCallback'
+  param: 'jsonpCallback',
+  prefix: 'jsonpcallbackfunction' // 这里qq音乐有的接口截取了下划线等特殊符号，所以使用全字母的callback
 }
 
 // 正确返回码

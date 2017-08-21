@@ -1,7 +1,7 @@
 <!-- create by zhanghaonan 2017/7/23 -->
 <template>
-  <div class="singer">
-    <listview :data="singers" @select="selectSinger"></listview>
+  <div class="singer" ref="singer">
+    <listview :data="singers" @select="selectSinger" ref="list"></listview>
     <!--定义子路由的入口-->
     <router-view></router-view>
   </div>
@@ -12,11 +12,13 @@
   import Singer from 'common/js/singer'
   import listview from 'base/listview/listview'
   import {mapMutations} from 'vuex' // 使用vuex提供的对象扩展函数
+  import {playListMixin} from 'common/js/mixin'
 
   const HOT_NAME = '热门'
   const HOT_SINGER_LEN = 10
 
   export default {
+    mixins:[playListMixin],
     data() {
       return {
         singers: []
@@ -32,6 +34,11 @@
       ...mapMutations({
         setSinger: 'SET_SINGER' // 这里就是将mutations中的SET_SINGER这个操作映射到这里，实际上是执行了store.commit
       }),
+      handlePlayList(playList){
+        const bottom = playList.length > 0 ? '60px' : ''
+        this.$refs.singer.style.bottom = bottom
+        this.$refs.list.refresh()
+      },
       selectSinger(singer) {
         this.$router.push(`/singer/${singer.id}`)
         this.setSinger(singer)

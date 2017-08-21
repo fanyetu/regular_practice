@@ -1,6 +1,6 @@
 <!-- create by zhanghaonan 2017/7/23 -->
 <template>
-  <div class="recommend">
+  <div class="recommend" ref="recommend">
     <scroll ref="scroll" class="recommend-content" :data="discList">
       <div>
         <!--使用v-if，当recommends不为空的时候才渲染slider-->
@@ -18,7 +18,7 @@
         <div class="recommend-list">
           <h1 class="list-title">热门歌单推荐</h1>
           <ul>
-            <li v-for="item in discList" class="item">
+            <li v-for="item in discList" class="item" @click="selectItem(item)">
               <div class="icon">
                 <!--使用vue-lazyload插件的v-lazy指令-->
                 <img v-lazy="item.imgurl" width="60" height="60"/>
@@ -35,6 +35,7 @@
         <loading></loading>
       </div>
     </scroll>
+    <router-view></router-view>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -43,8 +44,13 @@
   import Slider from 'base/slider/slider'
   import Scroll from 'base/scroll/scroll'
   import Loading from 'base/loading/loading'
+  import {playListMixin} from 'common/js/mixin'
+  import {mapMutations} from 'vuex'
 
   export default {
+    mixins: [
+      playListMixin
+    ],
     created() {
       this._getRecommend()
       this._getDiscList()
@@ -62,6 +68,18 @@
       Loading
     },
     methods: {
+      // 点击歌单触发的事件
+      selectItem(item) {
+        this.$router.push({
+          path: `recommend/${item.dissid}`
+        })
+        this.setDisc(item)
+      },
+      handlePlayList(playList) {
+        const bottom = playList.length > 0 ? '60px' : ''
+        this.$refs.recommend.style.bottom = bottom
+        this.$refs.scroll.refresh()
+      },
       _getRecommend() {
         // 通过封装的jsonp抓取qq音乐的数据
         getRecommend().then((resp) => {
@@ -83,7 +101,10 @@
           this.$refs.scroll.refresh()
           this.checkLoaded = true
         }
-      }
+      },
+      ...mapMutations({
+        setDisc: 'SET_DISC'
+      })
     }
   }
 </script>

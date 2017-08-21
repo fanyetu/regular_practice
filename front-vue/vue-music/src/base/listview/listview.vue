@@ -77,6 +77,9 @@
       }
     },
     methods: {
+      refresh(){
+        this.$refs.listview.refresh()
+      },
       selectItem(item) {
         this.$emit('select', item)// 派发点击列表项的事件
       },
