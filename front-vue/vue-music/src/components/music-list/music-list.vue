@@ -21,7 +21,7 @@
             :probe-type="probeType" :listen-scroll="listenScroll">
       <div class="song-list-wrapper"><!--控制内部样式-->
         <!--监听song-list组件的select事件-->
-        <song-list :songs="songs" @select="selectItem"></song-list>
+        <song-list :songs="songs" @select="selectItem" :rank="rank"></song-list>
       </div>
       <div class="loading-container" v-show="!songs.length">
         <loading></loading>
@@ -42,7 +42,7 @@
   const backdrop = prefixStyle('backdrop-filter')
 
   export default {
-    mixins:[
+    mixins: [
       playListMixin
     ],
     props: {
@@ -57,6 +57,10 @@
       bgImage: { // 背景图片
         type: String,
         default: ''
+      },
+      rank: {
+        type: Boolean,
+        default: false
       }
     },
     data() {
@@ -83,7 +87,7 @@
         'selectPlay',
         'randomPlay'
       ]),
-      handlePlayList(playList){
+      handlePlayList(playList) {
         const bottom = playList.length > 0 ? '60px' : ''
         this.$refs.list.$el.style.bottom = bottom
         this.$refs.list.refresh()

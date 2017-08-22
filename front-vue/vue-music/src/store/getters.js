@@ -1,6 +1,7 @@
 /**
  * Created by zhanghaonan on 2017/8/1.
  */
+import state from "./state";
 
 export const singer = state => state.singer
 
@@ -21,3 +22,5 @@ export const currentSong = (state) => {
 }
 
 export const disc = state => state.disc
+
+export const topList = state => state.topList
