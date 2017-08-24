@@ -2,12 +2,14 @@
 <template>
   <div class="search-box">
     <i class="icon-search"></i>
-    <input class="box" :placeholder="placeholder"
+    <input class="box" :placeholder="placeholder" ref="query"
            v-model="query"/><!--使用v-model实现双向数据绑定-->
     <i class="icon-dismiss" v-show="query" @click="clear"></i>
   </div>
 </template>
 <script type="text/ecmascript-6">
+  import {debounce} from 'common/js/util'
+
   export default {
     props: {
       placeholder: {
@@ -21,6 +23,9 @@
       }
     },
     methods: {
+      blur(){
+        this.$refs.query.blur()
+      },
       clear() {
         this.query = ''
       },
@@ -30,9 +35,9 @@
     },
     created() {
       // 监听query变化，派发query事件
-      this.$watch('query', (newQuery) => {
+      this.$watch('query', debounce((newQuery) => {
         this.$emit('query', newQuery)
-      })
+      }, 200)) // 对query事件的派发动作进行节流
     }
   }
 </script>

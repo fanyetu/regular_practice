@@ -31,6 +31,14 @@
       listenScroll: { // 是否监听滚动事件
         type: Boolean,
         default: false
+      },
+      pullup: { // 是否开启上拉刷新
+        type: Boolean,
+        default: false
+      },
+      beforeScroll: { // 是否派发beforeScroll事件
+        type: Boolean,
+        default: false
       }
     },
     mounted() {
@@ -51,6 +59,23 @@
           let me = this
           this.scroll.on('scroll', (pos) => {
             me.$emit('scroll', pos)// 派发scroll事件
+          })
+        }
+
+        // 如果开启上拉刷新
+        if (this.pullup) {
+          // 监听bs的scrollEnd事件
+          this.scroll.on('scrollEnd', () => {
+            // 如果滚动结束时接近底部了（缓冲50px）
+            if (this.scroll.y <= (this.scroll.maxScrollY) + 50) {
+              this.$emit('scrollToEnd') // 派发scrollToEnd事件
+            }
+          })
+        }
+
+        if (this.beforeScroll) { // 开始滚动时
+          this.scroll.on('beforeScrollStart', () => {
+            this.$emit('beforeScroll')
           })
         }
       },

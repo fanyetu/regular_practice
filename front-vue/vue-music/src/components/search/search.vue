@@ -17,8 +17,9 @@
       </div>
     </div>
     <div class="search-result" v-show="query">
-      <suggest :query="query"></suggest>
+      <suggest :query="query" @listScroll="blurInput"></suggest>
     </div>
+    <router-view></router-view>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -38,6 +39,10 @@
       }
     },
     methods: {
+      // 将input失去焦点
+      blurInput(){
+        this.$refs.searchBox.blur()
+      },
       onQueryChange(query) {
         this.query = query
       },
@@ -86,7 +91,6 @@
             background: $color-highlight-background
             font-size: $font-size-medium
             color: $color-text-d
-
     .search-result
       position: fixed
       width: 100%

@@ -3,6 +3,24 @@
  */
 
 /**
+ * 节流函数(当快速调用func的时候，debounce还是会延迟delay进行调用)
+ * @param func
+ * @param delay
+ */
+export function debounce(func, delay) {
+  let timer
+
+  return function (...args) {
+    if (timer){
+      clearTimeout(timer)
+    }
+    timer = setTimeout(()=>{
+      func.apply(this,args)
+    },delay)
+  }
+}
+
+/**
  * 洗牌函数（将list打乱）
  * @param arr
  * @return

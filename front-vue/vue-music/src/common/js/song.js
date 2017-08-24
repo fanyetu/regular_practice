@@ -67,7 +67,7 @@ export function createSong(musicData) {
  * @param singer
  * @returns {*}
  */
-export function filterSinger(singer) {
+function filterSinger(singer) {
   if (!singer) {
     return ''
   }
