@@ -59,6 +59,7 @@
         this.$emit('listScroll')
       },
       selectItem(item) {
+        // 跳转到歌手或歌曲页面
         if (item.type === TYPE_SINGER) {
           const singer = new Singer({
             id: item.singermid,
@@ -71,6 +72,8 @@
         } else {
           this.insertSong(item)
         }
+
+        this.$emit('select') // 派发select事件
       },
       getDisplayName(item) {
         if (item.type === TYPE_SINGER) {

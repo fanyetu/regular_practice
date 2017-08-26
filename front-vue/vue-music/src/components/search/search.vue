@@ -14,10 +14,18 @@
             </li>
           </ul>
         </div>
+        <div class="search-history" v-show="searchHistory.length">
+          <h1 class="title">
+            <span class="text">搜索历史</span>
+            <span class="clear">
+              <i class="icon-clear"></i>
+            </span>
+          </h1>
+        </div>
       </div>
     </div>
     <div class="search-result" v-show="query">
-      <suggest :query="query" @listScroll="blurInput"></suggest>
+      <suggest :query="query" @listScroll="blurInput" @select="saveSearch"></suggest>
     </div>
     <router-view></router-view>
   </div>
@@ -27,6 +35,7 @@
   import {getHotKey} from 'api/search'
   import {ERR_OK} from 'api/config'
   import Suggest from 'components/suggest/suggest'
+  import {mapActions,mapGetters} from 'vuex'
 
   export default {
     created() {
@@ -38,9 +47,21 @@
         query: ''
       }
     },
+    computed:{
+      ...mapGetters([
+        'searchHistory'
+      ])
+    },
     methods: {
+      ...mapActions([
+        'saveSearchHistory'
+      ]),
+      saveSearch() {
+        // 保存搜索结果
+        this.saveSearchHistory(this.query)
+      },
       // 将input失去焦点
-      blurInput(){
+      blurInput() {
         this.$refs.searchBox.blur()
       },
       onQueryChange(query) {
@@ -91,10 +112,27 @@
             background: $color-highlight-background
             font-size: $font-size-medium
             color: $color-text-d
+        .search-history
+          position relative
+          margin 0 20px
+          .title
+            display flex
+            align-items center
+            height 40px
+            font-size $font-size-medium
+            color $color-text-l
+            .text
+              flex 1
+            .clear
+              extend-click()
+              .icon-clear
+                font-size $font-size-medium
+                color $color-text-d
     .search-result
       position: fixed
       width: 100%
       top: 178px
       bottom: 0
+
   /*.test*/
 </style>

@@ -8,6 +8,16 @@
 import * as types from './mutation-types'
 import {playMode} from "common/js/config"
 import {shuffle} from "common/js/util"
+import {saveSearch} from "common/js/cache"
+
+/**
+ * 将搜索历史存储到本地和state中
+ * @param commit
+ * @param query
+ */
+export const saveSearchHistory = function ({commit}, query) {
+  commit(types.SET_SEARCH_HISTORY, saveSearch(query))
+}
 
 /**
  * 向playlist中插入一条数据
