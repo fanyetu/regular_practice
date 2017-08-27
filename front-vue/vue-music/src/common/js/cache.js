@@ -9,6 +9,45 @@ import storage from 'good-storage'
 const SEARCH_KEY = '__search__'
 const SEARCH_MAX_LENGTH = 15 // 最大存储空间
 
+/**
+ * 情况本地搜索缓存
+ */
+export function clearSearch() {
+  storage.remove(SEARCH_KEY)
+  return []
+}
+
+/**
+ * 从本地缓存中删除query
+ * @param query
+ * @return {*}
+ */
+export function deleteSearch(query) {
+  let searches = storage.get(SEARCH_KEY)
+  deleteFromArray(searches, (item) => {
+    return item === query
+  })
+
+  storage.set(SEARCH_KEY, searches)
+  return searches
+}
+
+/**
+ * 从数组中删除
+ * @param arr
+ * @param compare
+ */
+function deleteFromArray(arr, compare) {
+  const index = arr.findIndex(compare)
+  if (index > -1) {
+    arr.splice(index, 1)
+  }
+}
+
+/**
+ * 加载搜索历史
+ * @return {*}
+ */
 export function loadSearch() {
   return storage.get(SEARCH_KEY, [])
 }

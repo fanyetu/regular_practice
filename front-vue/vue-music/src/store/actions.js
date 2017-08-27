@@ -8,7 +8,24 @@
 import * as types from './mutation-types'
 import {playMode} from "common/js/config"
 import {shuffle} from "common/js/util"
-import {saveSearch} from "common/js/cache"
+import {saveSearch, deleteSearch, clearSearch} from "common/js/cache"
+
+/**
+ * 清空搜索结果列表
+ * @param commit
+ */
+export const clearSearchHistory = function ({commit}) {
+  commit(types.SET_SEARCH_HISTORY, clearSearch())
+}
+
+/**
+ * 从搜索结果历史中删除query
+ * @param commit
+ * @param query
+ */
+export const deleteSearchHistory = function ({commit}, query) {
+  commit(types.SET_SEARCH_HISTORY, deleteSearch(query))
+}
 
 /**
  * 将搜索历史存储到本地和state中

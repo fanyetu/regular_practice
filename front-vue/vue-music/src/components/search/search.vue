@@ -17,10 +17,13 @@
         <div class="search-history" v-show="searchHistory.length">
           <h1 class="title">
             <span class="text">搜索历史</span>
-            <span class="clear">
+            <span class="clear" @click="clearSearchHistory">
               <i class="icon-clear"></i>
             </span>
           </h1>
+          <search-list :searches="searchHistory"
+                       @select="addQuery"
+                       @delete="deleteSearchHistory"></search-list>
         </div>
       </div>
     </div>
@@ -35,7 +38,8 @@
   import {getHotKey} from 'api/search'
   import {ERR_OK} from 'api/config'
   import Suggest from 'components/suggest/suggest'
-  import {mapActions,mapGetters} from 'vuex'
+  import {mapActions, mapGetters} from 'vuex'
+  import SearchList from 'base/search-list/search-list'
 
   export default {
     created() {
@@ -47,14 +51,16 @@
         query: ''
       }
     },
-    computed:{
+    computed: {
       ...mapGetters([
         'searchHistory'
       ])
     },
     methods: {
       ...mapActions([
-        'saveSearchHistory'
+        'saveSearchHistory',
+        'deleteSearchHistory',
+        'clearSearchHistory'
       ]),
       saveSearch() {
         // 保存搜索结果
@@ -80,7 +86,8 @@
     },
     components: {
       SearchBox,
-      Suggest
+      Suggest,
+      SearchList
     }
   }
 </script>
