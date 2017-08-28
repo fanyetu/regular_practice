@@ -4,33 +4,37 @@
     <div class="search-box-wrapper">
       <search-box ref="searchBox" @query="onQueryChange"></search-box>
     </div>
-    <div class="shortcut-wrapper" v-show="!query">
-      <div class="shortcut">
-        <div class="hot-key">
-          <h1 class="title">热门搜索</h1>
-          <ul>
-            <li v-for="item in hotKey" class="item" @click="addQuery(item.k)">
-              <span>{{item.k}}</span>
-            </li>
-          </ul>
-        </div>
-        <div class="search-history" v-show="searchHistory.length">
-          <h1 class="title">
-            <span class="text">搜索历史</span>
-            <span class="clear" @click="clearSearchHistory">
+    <div class="shortcut-wrapper" v-show="!query" ref="shortcutWrapper">
+      <scroll class="shortcut" :data="shortcut" ref="shortcut">
+        <div><!--scroll组件下面只能包含一个子标签-->
+          <div class="hot-key">
+            <h1 class="title">热门搜索</h1>
+            <ul>
+              <li v-for="item in hotKey" class="item" @click="addQuery(item.k)">
+                <span>{{item.k}}</span>
+              </li>
+            </ul>
+          </div>
+          <div class="search-history" v-show="searchHistory.length">
+            <h1 class="title">
+              <span class="text">搜索历史</span>
+              <span class="clear" @click="showConfirm">
               <i class="icon-clear"></i>
             </span>
-          </h1>
-          <search-list :searches="searchHistory"
-                       @select="addQuery"
-                       @delete="deleteSearchHistory"></search-list>
+            </h1>
+            <search-list :searches="searchHistory"
+                         @select="addQuery"
+                         @delete="deleteSearchHistory"></search-list>
+          </div>
         </div>
-      </div>
+      </scroll>
     </div>
-    <div class="search-result" v-show="query">
-      <suggest :query="query" @listScroll="blurInput" @select="saveSearch"></suggest>
+    <div class="search-result" v-show="query" ref="searchResult">
+      <suggest :query="query" @listScroll="blurInput" @select="saveSearch" ref="suggest"></suggest>
     </div>
     <router-view></router-view>
+    <confirm ref="confirm" text="是否清空所有搜索历史" confirmText="清空"
+             @confirm="clearSearchHistory"></confirm>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -40,8 +44,14 @@
   import Suggest from 'components/suggest/suggest'
   import {mapActions, mapGetters} from 'vuex'
   import SearchList from 'base/search-list/search-list'
+  import Confirm from 'base/confirm/confirm'
+  import Scroll from 'base/scroll/scroll'
+  import {playListMixin} from 'common/js/mixin'
 
   export default {
+    mixins: [
+      playListMixin
+    ],
     created() {
       this._getHotKey()
     },
@@ -52,9 +62,23 @@
       }
     },
     computed: {
+      shortcut() { // 计算属性，给scroll组件使用
+        return this.hotKey.concat(this.searchHistory)
+      },
       ...mapGetters([
         'searchHistory'
       ])
+    },
+    watch: {
+      // 当从搜索界面回到搜索历史界面的时候，
+      // 因为scroll计算的时候dom还没显示，所以当跳转回来的时候手动刷新scroll
+      query(newQuery) {
+        if (!newQuery) {
+          setTimeout(() => {
+            this.$refs.shortcut.refresh()
+          }, 20)
+        }
+      }
     },
     methods: {
       ...mapActions([
@@ -62,6 +86,18 @@
         'deleteSearchHistory',
         'clearSearchHistory'
       ]),
+      handlePlayList(playList) {
+        const bottom = playList.length ? '60px' : ''
+
+        this.$refs.shortcutWrapper.style.bottom = bottom
+        this.$refs.shortcut.refresh()
+
+        this.$refs.searchResult.style.bottom = bottom
+        this.$refs.suggest.refresh()
+      },
+      showConfirm() {
+        this.$refs.confirm.show()
+      },
       saveSearch() {
         // 保存搜索结果
         this.saveSearchHistory(this.query)
@@ -87,7 +123,9 @@
     components: {
       SearchBox,
       Suggest,
-      SearchList
+      SearchList,
+      Confirm,
+      Scroll
     }
   }
 </script>
