@@ -1,7 +1,7 @@
 <!-- create by zhanghaonan 2017/8/27 -->
 <template>
   <transition name="confirm-fade">
-    <div class="confirm" v-show="showFlag">
+    <div class="confirm" v-show="showFlag" @click.stop><!--截获confirm的点击事件，不让其冒泡到外层组件-->
       <div class="confirm-wrapper">
         <div class="confirm-content">
           <p class="text">{{text}}</p>

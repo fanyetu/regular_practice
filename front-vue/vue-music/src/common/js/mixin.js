@@ -29,3 +29,7 @@ export const playListMixin = {
     }
   }
 }
+
+export const playerMixin = {
+
+}

@@ -86,10 +86,11 @@
           </progress-circle>
         </div>
         <div class="control">
-          <i class="icon-playlist"></i>
+          <i class="icon-playlist" @click.stop="showPlaylist"></i>
         </div>
       </div>
     </transition>
+    <playlist ref="playlist"></playlist>
     <!--监听audio的canplay事件和error事件，防止用户快速切换歌曲-->
     <!--监听audio的timeupdate事件，获取audio的currentTime-->
     <!--监听audio的ended事件，当歌曲播放结束后，跳转到下一首歌-->
@@ -107,6 +108,7 @@
   import {shuffle} from 'common/js/util'
   import Lyric from 'lyric-parser' // 歌词处理工具包
   import Scroll from 'base/scroll/scroll'
+  import Playlist from 'components/playlist/playlist'
 
   const transform = prefixStyle('transform')
   const transitionDuration = prefixStyle('transitionDuration')
@@ -126,7 +128,8 @@
     components: {
       ProgressBar,
       ProgressCircle,
-      Scroll
+      Scroll,
+      Playlist
     },
     computed: {
       iconMode() {
@@ -162,6 +165,9 @@
       this.touch = {} // 初始化touch对象，因为我们不需要监听touch对象的变化，所以就放到created中初始化
     },
     methods: {
+      showPlaylist() {
+        this.$refs.playlist.show()
+      },
       middleTouchStart(e) {
         // TODO 这个初始化和这个move到底是为了解决什么问题??
         this.touch.initialized = true
@@ -456,6 +462,9 @@
     },
     watch: {
       currentSong: function (newSong, oldSong) {
+        if (!newSong.id) {
+          return
+        }
         if (newSong.id === oldSong.id) {
           return
         }
