@@ -109,11 +109,15 @@
   import Lyric from 'lyric-parser' // 歌词处理工具包
   import Scroll from 'base/scroll/scroll'
   import Playlist from 'components/playlist/playlist'
+  import {playerMixin} from 'common/js/mixin'
 
   const transform = prefixStyle('transform')
   const transitionDuration = prefixStyle('transitionDuration')
 
   export default {
+    mixins:[
+      playerMixin
+    ],
     data() {
       return {
         songReady: false,
@@ -132,10 +136,10 @@
       Playlist
     },
     computed: {
-      iconMode() {
-        return this.mode === playMode.sequence ? 'icon-sequence' : this.mode === playMode.loop ?
-          'icon-loop' : 'icon-random'
-      },
+//      iconMode() {
+//        return this.mode === playMode.sequence ? 'icon-sequence' : this.mode === playMode.loop ?
+//          'icon-loop' : 'icon-random'
+//      },
       cdClass() {
         return this.playing ? 'play' : 'play pause'
       },
@@ -153,12 +157,8 @@
       },
       ...mapGetters([
         'fullScreen',
-        'playList',
-        'currentSong',
         'playing',
-        'currentIndex',
-        'mode',
-        'sequenceList'
+        'currentIndex'
       ])
     },
     created() {
@@ -277,30 +277,30 @@
           this.currentLyric.seek(0) // 将歌词放到第一行
         }
       },
-      // 切换播放模式
-      changeMode() {
-        let mode = (this.mode + 1) % 3
-        this.setMode(mode)
-
-        let list = null
-        if (this.mode === playMode.random) {
-          list = shuffle(this.sequenceList)
-        } else {
-          list = this.sequenceList
-        }
-
-        this._resetCurrentIndex(list)
-        this.setPlayList(list)
-      },
-      // 当修改playList的时候，修改当前的currentIndex，达到不跳转歌曲的目的
-      _resetCurrentIndex(list) {
-        // findIndex是es6的函数
-        let index = list.findIndex((item) => {
-          return item.id === this.currentSong.id
-        })
-
-        this.setCurrentIndex(index)
-      },
+//       切换播放模式
+//      changeMode() {
+//        let mode = (this.mode + 1) % 3
+//        this.setMode(mode)
+//
+//        let list = null
+//        if (this.mode === playMode.random) {
+//          list = shuffle(this.sequenceList)
+//        } else {
+//          list = this.sequenceList
+//        }
+//
+//        this._resetCurrentIndex(list)
+//        this.setPlayList(list)
+//      },
+//      // 当修改playList的时候，修改当前的currentIndex，达到不跳转歌曲的目的
+//      _resetCurrentIndex(list) {
+//        // findIndex是es6的函数
+//        let index = list.findIndex((item) => {
+//          return item.id === this.currentSong.id
+//        })
+//
+//        this.setCurrentIndex(index)
+//      },
       // 监听progressbar的percentchange事件
       onProgressBarChange(percent) {
         const currentTime = this.currentSong.duration * percent
@@ -454,10 +454,10 @@
       // 使用mutations修改fullScreen属性
       ...mapMutations({
         setFullScreen: 'SET_FULL_SCREEN',
-        setPlaying: 'SET_PLAYING',
-        setCurrentIndex: 'SET_CURRENT_INDEX',
-        setMode: 'SET_MODE',
-        setPlayList: 'SET_PLAY_LIST'
+//        setPlaying: 'SET_PLAYING',
+//        setCurrentIndex: 'SET_CURRENT_INDEX',
+//        setMode: 'SET_MODE',
+//        setPlayList: 'SET_PLAY_LIST'
       })
     },
     watch: {
