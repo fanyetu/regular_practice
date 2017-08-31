@@ -95,7 +95,8 @@ export const searchMixin = {
   },
   data() {
     return {
-      query: ''
+      query: '',
+      refreshDelay: 100 // 解决transition-group的100毫秒动画之后scroll刷新不及时的问题
     }
   },
   methods: {

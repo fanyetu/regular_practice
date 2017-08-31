@@ -1,15 +1,15 @@
 <!-- create by zhanghaonan 2017/8/26 -->
 <template>
   <div class="search-list" v-show="searches.length">
-    <ul>
+    <transition-group name="list" tag="ul">
       <li class="search-item" v-for="item in searches"
-          @click="selectItem(item)">
+          @click="selectItem(item)" :key="item">
         <span class="text">{{item}}</span>
         <span class="icon" @click.stop="deleteOne(item)"><!--stop阻止事件冒泡-->
           <i class="icon-delete"></i>
         </span>
       </li>
-    </ul>
+    </transition-group>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -38,6 +38,11 @@
       display flex
       align-items center
       height 40px
+      overflow hidden
+      &.list-enter-active, &.list-leave-active
+        transition all 0.1s
+      &.list-enter, &.list-leave-to
+        height 0
       .text
         flex 1
         color $color-text-l

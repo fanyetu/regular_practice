@@ -12,7 +12,7 @@
             </span>
           </h1>
         </div>
-        <scroll class="list-content" :data="sequenceList" ref="listContent">
+        <scroll class="list-content" :data="sequenceList" ref="listContent" :refreshDelay="refreshDelay">
           <transition-group name="list" tag="ul"><!--使用transition-group实现多个元素动画-->
             <li :key="item.id" class="item" v-for="(item,index) in sequenceList"
                 @click="selectItem(item,index)" ref="listItem">
@@ -57,7 +57,8 @@
     ],
     data() {
       return {
-        showFlag: false
+        showFlag: false,
+        refreshDelay: 100 // 解决transition-group的100毫秒动画之后scroll刷新不及时的问题
       }
     },
     computed: {
@@ -67,7 +68,7 @@
       }
     },
     methods: {
-      addSong(){
+      addSong() {
         this.$refs.addSong.show()
       },
       confirmClear() {
@@ -136,7 +137,7 @@
     }
   }
 </script>
-<style lang="stylus">
+<style scoped lang="stylus">
   @import "~common/stylus/variable"
   @import "~common/stylus/mixin"
 
@@ -191,7 +192,7 @@
           padding 0 30px 0 20px
           overflow hidden
           &.list-enter-active, &.list-leave-active
-            transition all 0.3s linear
+            transition all 0.1s
           &.list-enter, &.list-leave-to
             height 0
           .current

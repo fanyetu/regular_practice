@@ -9,6 +9,33 @@ import storage from 'good-storage'
 const SEARCH_KEY = '__search__'
 const SEARCH_MAX_LENGTH = 15 // 最大存储空间
 
+const PLAY_KEY = '__play__'
+const PLAY_MAX_LENGTH = 200
+
+/**
+ * 读取本地歌曲列表
+ * @return {*}
+ */
+export function loadPlay() {
+  return storage.get(PLAY_KEY, [])
+}
+
+/**
+ * 存储歌曲到本地
+ * @param song
+ * @return {*}
+ */
+export function savePlay(song) {
+  let songs = storage.get(PLAY_KEY, [])
+
+  insertArray(songs, song, (item) => {
+    return item.id === song.id
+  }, PLAY_MAX_LENGTH)
+
+  storage.set(PLAY_KEY, songs)
+  return songs
+}
+
 /**
  * 情况本地搜索缓存
  */

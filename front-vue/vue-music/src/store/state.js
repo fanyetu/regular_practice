@@ -2,7 +2,7 @@
  * Created by zhanghaonan on 2017/8/1.
  */
 import {playMode} from "common/js/config"
-import {loadSearch} from "common/js/cache"
+import {loadSearch, loadPlay} from "common/js/cache"
 
 const state = {
   singer: {},
@@ -14,7 +14,8 @@ const state = {
   currentIndex: -1, // 当前歌曲索引
   disc: {}, // 歌单对象
   topList: {}, // 排行榜歌单对象
-  searchHistory: loadSearch() // 搜索历史
+  searchHistory: loadSearch(), // 搜索历史
+  playHistory: loadPlay() // 播放历史
 }
 
 export default state

@@ -39,6 +39,10 @@
       beforeScroll: { // 是否派发beforeScroll事件
         type: Boolean,
         default: false
+      },
+      refreshDelay: { // 延迟刷新scroll的时间
+        type: Number,
+        default: 20
       }
     },
     mounted() {
@@ -101,7 +105,7 @@
       data: function () { // vue官方建议这里不要使用箭头函数，因为箭头函数的作用域不同
         setTimeout(() => {
           this.refresh()
-        }, 20)
+        }, this.refreshDelay)
       }
     }
   }
