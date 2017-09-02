@@ -12,6 +12,48 @@ const SEARCH_MAX_LENGTH = 15 // 最大存储空间
 const PLAY_KEY = '__play__'
 const PLAY_MAX_LENGTH = 200
 
+const FAVORITE_KEY = '__favorite__'
+const FAVORITE_MAX_LENGTH = 200
+
+/**
+ * 加载收藏歌曲
+ * @return {*}
+ */
+export function loadFavorite() {
+  return storage.get(FAVORITE_KEY, [])
+}
+
+/**
+ * 删除收藏歌曲
+ * @param song
+ * @return {*}
+ */
+export function deleteFavorite(song) {
+  let songs = storage.get(FAVORITE_KEY)
+  deleteFromArray(songs, (item) => {
+    return song.id === item.id
+  })
+
+  storage.set(FAVORITE_KEY, songs)
+  return songs
+}
+
+/**
+ * 保存收藏歌曲
+ * @param song
+ * @return {*}
+ */
+export function saveFavorite(song) {
+  let songs = storage.get(FAVORITE_KEY, [])
+  insertArray(songs, song, (item) => {
+    return song.id === item.id
+  }, FAVORITE_MAX_LENGTH)
+
+  storage.set(FAVORITE_KEY, songs)
+
+  return songs
+}
+
 /**
  * 读取本地歌曲列表
  * @return {*}
