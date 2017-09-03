@@ -92,10 +92,10 @@
       </div>
     </transition>
     <playlist ref="playlist"></playlist>
-    <!--监听audio的canplay事件和error事件，防止用户快速切换歌曲-->
+    <!--监听audio的play事件和error事件，防止用户快速切换歌曲-->
     <!--监听audio的timeupdate事件，获取audio的currentTime-->
     <!--监听audio的ended事件，当歌曲播放结束后，跳转到下一首歌-->
-    <audio :src="currentSong.url" ref="audio" @canplay="ready" @error="error"
+    <audio :src="currentSong.url" ref="audio" @play="ready" @error="error"
            @timeupdate="updateTime" @ended="end"></audio>
   </div>
 </template>
@@ -241,6 +241,9 @@
       },
       getLyric() {
         this.currentSong.getLyric().then((lyric) => {
+          if (this.currentSong.lyric !== lyric){
+            return
+          }
           this.currentLyric = new Lyric(lyric, this.lyricHandler)
           if (this.playing) {
             this.currentLyric.play()
@@ -276,6 +279,9 @@
         this.$refs.audio.play()
         if (this.currentLyric) {
           this.currentLyric.seek(0) // 将歌词放到第一行
+        }
+        if (!this.playing) {
+          this.togglePlaying()
         }
       },
 //       切换播放模式
@@ -330,6 +336,7 @@
         }
         if (this.playList.length === 1) { // 处理播放列表长度为1的边界情况
           this.loop()
+          return
         } else {
           let index = this.currentIndex - 1
           if (index === -1) {
@@ -348,6 +355,7 @@
         }
         if (this.playList.length === 1) { // 处理播放列表长度为1的边界情况
           this.loop()
+          return
         } else {
           let index = this.currentIndex + 1
           if (index === this.playList.length) {
@@ -477,7 +485,8 @@
         if (this.currentLyric) {
           this.currentLyric.stop() // 停止之前歌曲的歌词跳动
         }
-        setTimeout(() => { // 处理微信后台播放的情况
+        clearTimeout(this.timer)
+        this.timer = setTimeout(() => { // 处理微信后台播放的情况
 //        this.$nextTick(() => {
           this.$refs.audio.play()
           this.getLyric()

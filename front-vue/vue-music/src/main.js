@@ -8,6 +8,11 @@ import VueLazyLoad from 'vue-lazyload'
 
 import 'common/stylus/index.styl'
 
+/* eslint-disable no-unused-vars */
+import vConsole from 'vconsole' // 引入vConsole移动端console.log输出工具，不需要配置，引入即可使用
+
+console.log("test")
+
 // Vue.config.productionTip = false
 
 // 使用fastclick解决移动端点击300毫秒的延迟
