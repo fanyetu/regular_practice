@@ -2,7 +2,6 @@ package cn.fanyetu.java8.lambda;
 
 import org.junit.Test;
 
-import javax.security.jacc.EJBMethodPermission;
 import java.util.*;
 
 /**
@@ -140,5 +139,7 @@ public class TestLambda {
 				.sorted()
 				.forEach(System.out::println);
 	}
+
+	// java8还是牛逼
 
 }
