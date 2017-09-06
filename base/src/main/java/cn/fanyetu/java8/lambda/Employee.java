@@ -9,6 +9,11 @@ public class Employee {
 	private Integer age;
 	private Double salary;
 
+	public Employee(Integer age, String name) {
+		this.age = age;
+		this.name = name;
+	}
+
 	@Override
 	public String toString() {
 		return "Employee{" +
@@ -16,6 +21,10 @@ public class Employee {
 				", age=" + age +
 				", salary=" + salary +
 				'}';
+	}
+
+	public Employee(Integer age){
+		this.age = age;
 	}
 
 	public Employee(String name, Integer age, Double salary) {
