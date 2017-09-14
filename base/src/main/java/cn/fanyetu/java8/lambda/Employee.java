@@ -8,22 +8,32 @@ public class Employee {
 	private String name;
 	private Integer age;
 	private Double salary;
+	private Status status;
 
 	public Employee(Integer age, String name) {
 		this.age = age;
 		this.name = name;
 	}
 
-	@Override
-	public String toString() {
-		return "Employee{" +
-				"name='" + name + '\'' +
-				", age=" + age +
-				", salary=" + salary +
-				'}';
-	}
+    public Status getStatus() {
+        return status;
+    }
 
-	public Employee(Integer age){
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                ", salary=" + salary +
+                ", status=" + status +
+                '}';
+    }
+
+    public Employee(Integer age){
 		this.age = age;
 	}
 
@@ -33,7 +43,14 @@ public class Employee {
 		this.salary = salary;
 	}
 
-	public Employee() {
+    public Employee(String name, Integer age, Double salary, Status status) {
+        this.name = name;
+        this.age = age;
+        this.salary = salary;
+        this.status = status;
+    }
+
+    public Employee() {
 
 	}
 
@@ -61,4 +78,10 @@ public class Employee {
 	public void setSalary(Double salary) {
 		this.salary = salary;
 	}
+
+	public enum Status{
+	    FREE,
+        BUSY,
+        VOCATION
+    }
 }
