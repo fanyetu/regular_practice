@@ -38,7 +38,24 @@ public class TestStream3 {
                 .collect(Collectors.toCollection(HashSet::new));
 
         collect2.forEach(System.out::println);
-    }
+
+        System.out.println("=============");
+
+        // 使用collect统计总数
+		Long count = list.stream()
+				.collect(Collectors.counting());
+		System.out.println(count);
+
+		System.out.println("=================");
+
+		// 使用collect统计平均值
+		Double avg = list.stream()
+				.collect(Collectors.averagingDouble(Employee::getSalary));
+
+		System.out.println(avg);
+
+
+	}
 
     /**
      * reduce规约
