@@ -1,5 +1,8 @@
 package cn.fanyetu.util.crypto.symmetric;
 
+import cn.fanyetu.util.crypto.Mode;
+import cn.fanyetu.util.crypto.Padding;
+
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import java.nio.charset.Charset;
@@ -13,11 +16,6 @@ public class AES extends SymmetricCrypto {
 		super(SymmetricAlgorithm.AES);
 	}
 
-	/**
-	 * 构造
-	 *
-	 * @param key 密钥，支持三种密钥长度：128、192、256位
-	 */
 	public AES(byte[] key) {
 		super(SymmetricAlgorithm.AES, key);
 	}
@@ -32,6 +30,22 @@ public class AES extends SymmetricCrypto {
 
 	public AES(String key) {
 		super(SymmetricAlgorithm.AES, key);
+	}
+
+	public AES(String mode, String padding, byte[] key) {
+		super("AES/" + mode + "/" + padding, key);
+	}
+
+	public AES(String mode, String padding) {
+		this(mode, padding, null);
+	}
+
+	public AES(Mode mode, Padding padding, byte[] key) {
+		this(mode.name(), padding.name(), key);
+	}
+
+	public AES(Mode mode, Padding padding) {
+		this(mode, padding, null);
 	}
 
 	public AES setIv(IvParameterSpec iv) {

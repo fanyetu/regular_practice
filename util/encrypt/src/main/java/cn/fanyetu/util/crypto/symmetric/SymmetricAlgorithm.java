@@ -7,6 +7,7 @@ package cn.fanyetu.util.crypto.symmetric;
  */
 public enum SymmetricAlgorithm {
 
+	/** 默认的AES加密方式：AES/CBC/PKCS5Padding */
 	AES("AES");
 
 	private String value;

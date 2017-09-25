@@ -53,13 +53,21 @@ public class SymmetricCrypto {
 		init(algorithm, key);
 	}
 
+	public SymmetricCrypto(String algorithm,byte[] key){
+		init(algorithm, CryptoUtil.generateKey(algorithm,key));
+	}
+
 	private SymmetricCrypto init(SymmetricAlgorithm algorithm, SecretKey secretKey) {
+		return init(algorithm.getValue(),secretKey);
+	}
+
+	private SymmetricCrypto init(String algorithm, SecretKey secretKey){
 		this.secretKey = secretKey;
 //		if (SymmetricAlgorithm.DES) {
 //
 //		}
 		try {
-			this.cipher = Cipher.getInstance(algorithm.getValue());
+			this.cipher = Cipher.getInstance(algorithm);
 		} catch (Exception e) {
 			throw new CryptoException(e);
 		}

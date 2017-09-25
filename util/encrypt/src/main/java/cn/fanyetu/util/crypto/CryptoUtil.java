@@ -59,8 +59,12 @@ public class CryptoUtil {
 	 * @return
 	 */
 	public static SecretKey generateKey(SymmetricAlgorithm algorithm, byte[] key) {
+		return generateKey(algorithm.getValue(),key);
+	}
+
+	public static SecretKey generateKey(String algorithm, byte[] key){
 		return (null == key) ? generateKey(algorithm) :
-				new SecretKeySpec(key, algorithm.getValue());
+				new SecretKeySpec(key, algorithm);
 	}
 
 	/**
@@ -70,9 +74,13 @@ public class CryptoUtil {
 	 * @return
 	 */
 	public static SecretKey generateKey(SymmetricAlgorithm algorithm) {
+		return generateKey(algorithm.getValue());
+	}
+
+	public static SecretKey generateKey(String algorithm){
 		SecretKey secretKey;
 		try {
-			secretKey = KeyGenerator.getInstance(algorithm.getValue()).generateKey();
+			secretKey = KeyGenerator.getInstance(algorithm).generateKey();
 		} catch (NoSuchAlgorithmException e) {
 			throw new CryptoException(e);
 		}
