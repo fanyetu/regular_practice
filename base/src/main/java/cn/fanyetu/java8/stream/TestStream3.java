@@ -16,7 +16,7 @@ public class TestStream3 {
      * collect收集
      */
     @Test
-    public void test4(){
+    public void test4() {
         List<String> collect = list.stream()
                 .map(Employee::getName)
                 .collect(Collectors.toList());
@@ -42,26 +42,89 @@ public class TestStream3 {
         System.out.println("=============");
 
         // 使用collect统计总数
-		Long count = list.stream()
-				.collect(Collectors.counting());
-		System.out.println(count);
+        Long count = list.stream()
+                .collect(Collectors.counting());
+        System.out.println(count);
 
-		System.out.println("=================");
+        System.out.println("=================");
 
-		// 使用collect统计平均值
-		Double avg = list.stream()
-				.collect(Collectors.averagingDouble(Employee::getSalary));
+        // 使用collect统计平均值
+        Double avg = list.stream()
+                .collect(Collectors.averagingDouble(Employee::getSalary));
 
-		System.out.println(avg);
+        System.out.println(avg);
 
+        System.out.printf("===============");
 
-	}
+        // 最大值
+        Optional<Employee> max = list.stream()
+                .collect(Collectors.maxBy((e1, e2) -> e1.getSalary().compareTo(e2.getSalary())));
+
+        System.out.println("max:" + max.get());
+
+        System.out.println("=============");
+
+        // 对数据进行分组
+
+        Map<Employee.Status, List<Employee>> group = list.stream()
+                .collect(Collectors.groupingBy(Employee::getStatus));
+
+        System.out.println(group);
+
+        System.out.println("==============");
+
+        // 多级分组
+
+        Map<Employee.Status, Map<String, List<Employee>>> groups = list.stream()
+                .collect(Collectors.groupingBy(Employee::getStatus, Collectors.groupingBy((e) -> {
+                    if (e.getAge() <= 35) {
+                        return "青年";
+                    } else if (e.getAge() <= 50) {
+                        return "中年";
+                    } else {
+                        return "老年";
+                    }
+                })));
+
+        System.out.println(groups);
+
+        System.out.println("==================");
+
+        // 分区 分为true和false两个区
+
+        Map<Boolean, List<Employee>> groups2 = list.stream()
+                .collect(Collectors.partitioningBy((e) -> e.getSalary() > 5000));
+
+        System.out.println(groups2);
+
+        System.out.println("===================");
+
+        // 便捷的获取组函数
+
+        DoubleSummaryStatistics dss = list.stream()
+                .collect(Collectors.summarizingDouble(Employee::getSalary));
+
+        System.out.println(dss.getCount());
+        System.out.println(dss.getAverage());
+        System.out.println(dss.getMax());
+        System.out.println(dss.getSum());
+
+        System.out.println("================");
+
+        // join操作
+        String joinResult = list.stream()
+                .map(Employee::getName)
+                .collect(Collectors.joining(",", "===", "==="));
+
+        System.out.println(joinResult);
+
+    }
 
     /**
      * reduce规约
      */
     @Test
-    public void test3(){
+    public void test3() {
         List<Integer> arr = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 
         Integer result = arr.stream()
@@ -83,10 +146,10 @@ public class TestStream3 {
     List<Employee> list = Arrays.asList(
             new Employee("张三", 20, 3333.33, Employee.Status.FREE),
             new Employee("李四", 15, 5555.55, Employee.Status.BUSY),
-            new Employee("王五", 35, 6666.66,Employee.Status.VOCATION),
-            new Employee("赵六", 58, 4444.44,Employee.Status.BUSY),
-            new Employee("田七", 45, 8888.88,Employee.Status.FREE),
-            new Employee("朱八", 42, 2222.22,Employee.Status.VOCATION)
+            new Employee("王五", 35, 6666.66, Employee.Status.VOCATION),
+            new Employee("赵六", 58, 4444.44, Employee.Status.BUSY),
+            new Employee("田七", 45, 8888.88, Employee.Status.FREE),
+            new Employee("朱八", 42, 2222.22, Employee.Status.VOCATION)
     );
 
     /**
@@ -143,7 +206,7 @@ public class TestStream3 {
     }
 
     @Test
-    public void test2(){
+    public void test2() {
         long count = list.stream()
                 .count();
 
