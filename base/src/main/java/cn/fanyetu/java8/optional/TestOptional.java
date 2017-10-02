@@ -5,7 +5,47 @@ import org.junit.Test;
 
 import java.util.Optional;
 
+/**
+ * Created by zhanghaonan on 2017/10/2.
+ */
 public class TestOptional {
+
+	@Test
+	public void test6() {
+		// 原来排除空指针的方式
+		Man man = new Man();
+		String name = getGodnessName(man);
+		System.out.println(name);
+
+		// 使用Optional的方式避免空指针异常
+		String name1 = getGodnessName(Optional.empty());
+		System.out.println(name1);
+
+		String name2 = getGodnessName(Optional.of(new NewMan()));
+		System.out.println(name2);
+
+		String name3 = getGodnessName(Optional
+				.of(new NewMan(Optional.of(new Godness("具体")))));
+		System.out.println(name3);
+	}
+
+	private String getGodnessName(Optional<NewMan> man){
+		return man.orElse(new NewMan())
+				.getGodness()
+				.orElse(new Godness("默认"))
+				.getName();
+	}
+
+	private String getGodnessName(Man man) {
+		// 通过if判断来避免空指针异常
+		if (null != man) {
+			Godness godness = man.getGodness();
+			if (godness != null) {
+				return godness.getName();
+			}
+		}
+		return "默认";
+	}
 
     /*
 	- Optional.of(T t)：创建一个Optional的实例
@@ -38,6 +78,8 @@ public class TestOptional {
 		System.out.println(op.orElse(new Employee("张三", 18, 888.0)));
 
 		System.out.println(op.orElseGet(() -> new Employee("张三", 18, 888.0)));
+
+		op.orElseThrow(RuntimeException::new); // 直接抛出异常
 	}
 
 	@Test
