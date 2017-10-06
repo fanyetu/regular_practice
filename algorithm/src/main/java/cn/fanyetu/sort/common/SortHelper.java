@@ -11,6 +11,29 @@ import java.time.Instant;
 public class SortHelper {
 
     /**
+     * 生成近乎有序的数组
+     *
+     * @param length    数组长度
+     * @param swapTimes 交换次数
+     * @return
+     */
+    public static Integer[] generateNearlyOrderedArray(int length, int swapTimes) {
+
+        Integer[] arr = new Integer[length];
+        for (int i = 0; i < length; i++) {
+            arr[i] = i;
+        }
+
+        for (int i = 0; i < swapTimes; i++) {
+            int posx = (int) (Math.random() * length);
+            int posy = (int) (Math.random() * length);
+            swap(arr, posx, posy);
+        }
+
+        return arr;
+    }
+
+    /**
      * 测试排序所耗时间
      *
      * @param sortName

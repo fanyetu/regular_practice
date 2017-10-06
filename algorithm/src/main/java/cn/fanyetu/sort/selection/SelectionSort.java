@@ -1,7 +1,9 @@
 package cn.fanyetu.sort.selection;
 
 import cn.fanyetu.sort.common.Sort;
-import cn.fanyetu.sort.common.SortHelper;
+
+import static cn.fanyetu.sort.common.SortHelper.less;
+import static cn.fanyetu.sort.common.SortHelper.swap;
 
 /**
  * 选择排序 selection sort
@@ -21,12 +23,12 @@ public class SelectionSort implements Sort {
             // 将arr[i]和arr[i+1...n]中最小的元素进行交换
             int minIndex = i; // 最小元素的索引
             for (int j = i + 1; j < n; j++) {
-                if (SortHelper.less(arr[j], arr[minIndex])) {
+                if (less(arr[j], arr[minIndex])) {
                     minIndex = j;
                 }
             }
 
-            SortHelper.swap(arr, i, minIndex);
+            swap(arr, i, minIndex);
 
         }
     }
