@@ -11,6 +11,37 @@ import java.time.Instant;
 public class SortHelper {
 
     /**
+     * 插入排序工具类，对数组中的[l...r]的元素进行排序
+     *
+     * @param arr
+     * @param l
+     * @param r
+     * @param <T>
+     */
+    public static <T extends Comparable<T>> void insertionSort(T[] arr, int l, int r) {
+//        int n = arr.length;
+        // 这段代码有问题吗？问题出在哪儿？
+//        for (int i = 1; i < n; i++) {
+//            int minIndex = i;
+//            int j;
+//            for (j = i-1;j > 0 && less(arr[j],arr[minIndex]);j--){
+//                minIndex = j;
+//            }
+//            arr[minIndex] = arr[i];
+//        }
+
+        int n = r - l + 1;
+        for (int i = l + 1; i < n; i++) {
+            T item = arr[i];
+            int j;
+            for (j = i; (j > l) && less(item, arr[j - 1]); j--) {
+                arr[j] = arr[j - 1];
+            }
+            arr[j] = item;
+        }
+    }
+
+    /**
      * 生成近乎有序的数组
      *
      * @param length    数组长度
