@@ -29,9 +29,8 @@ public class SortHelper {
 //            }
 //            arr[minIndex] = arr[i];
 //        }
-
-        int n = r - l + 1;
-        for (int i = l + 1; i < n; i++) {
+        
+        for (int i = l + 1; i <= r; i++) {
             T item = arr[i];
             int j;
             for (j = i; (j > l) && less(item, arr[j - 1]); j--) {
