@@ -11,6 +11,13 @@ import static cn.fanyetu.sort.merge.MergeSortHelper.merge;
  *
  * 自顶向下的归并排序
  *
+ *
+ * - 归并排序的思想
+ * - 归并排序是一种递归排序的算法，将两个有序的数组归并成一个更大的有序数组
+ * - 要将一个数组排序，可以先递归的将它分成两半分别进行排序，然后将结果归并起来
+ * - 归并排序的时间复杂都是NlogN级别的，但是它所需的额外空间和N成正比
+ * - 归并排序分为两种，分别是自顶向下的归并排序和自底向上的归并排序
+ *
  */
 public class ImprovedMergeSortTopDown implements Sort {
 
