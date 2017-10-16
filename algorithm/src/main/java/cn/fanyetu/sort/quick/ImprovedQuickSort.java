@@ -59,7 +59,7 @@ public class ImprovedQuickSort implements Sort {
         SortHelper.swap(arr, l, (int) (Math.random() * (r - l + 1) + l));
         T v = arr[l];
 
-        // arr[l+1...j]<v && arr[j+1...i)>v ，初始情况前后两个数组都为空
+        /*// arr[l+1...j]<v && arr[j+1...i)>v ，初始情况前后两个数组都为空
         int j = l;
         for (int i = l + 1; i <= r; i++) {
             // 如果i位置的元素比v大，那么i就是处理大于v这个数组里面的，直接i++即可
@@ -68,6 +68,22 @@ public class ImprovedQuickSort implements Sort {
                 SortHelper.swap(arr, j + 1, i);
                 j++;
             }
+        }*/
+
+        // improved 之前的partition的方式，如果数组中重复元素非常多的话，partition之后的两个数组就会非常的不平衡
+        // 因为有可能一边的数组包含了大量的重复元素，进过改进后，将和v相等的元素随机的存放在partition后的两个数组中
+        // 防止了某一边的数组过大。
+        // arr[l+1...i)<=v && arr(j...r]>=v
+        int i = l + 1, j = r;
+        while (true) { // i向前移动，j向后移动
+            while (i <= r && SortHelper.less(arr[i], v)) i++;
+            while (j >= l + 1 && SortHelper.less(v, arr[j])) j--;
+            if (i > j) {
+                break;
+            }
+            SortHelper.swap(arr, i, j);
+            i++;
+            j--;
         }
 
         // 当整个数组遍历完成之后，将v这个元素和小于v的数组的最后一个元素进行交换即可
