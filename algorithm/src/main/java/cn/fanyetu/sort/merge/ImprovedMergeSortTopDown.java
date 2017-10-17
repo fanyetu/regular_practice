@@ -47,7 +47,7 @@ public class ImprovedMergeSortTopDown implements Sort {
             return;
         }
 
-        int middle = (l + r) / 2; // 如果l和r非常打，那么l+r可能超出int的范围
+        int middle = (l + r) / 2; // 如果l和r非常大，那么l+r可能超出int的范围
 
         // 将数组拆分
         mergeSort(arr, l, middle);
