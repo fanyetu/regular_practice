@@ -9,7 +9,7 @@ import cn.fanyetu.sort.common.Sort;
  *
  * Created by zhanghaonan at 2017/10/18
  */
-public class NormalHeapSort implements Sort {
+public class GeneralHeapSort implements Sort {
 
     @Override
     public <T extends Comparable<T>> void sort(T[] arr) {

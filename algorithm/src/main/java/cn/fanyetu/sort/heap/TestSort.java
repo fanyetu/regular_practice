@@ -20,11 +20,13 @@ public class TestSort {
         Integer[] arr2 = Arrays.copyOf(arr1, n);
         Integer[] arr3 = Arrays.copyOf(arr1, n);
         Integer[] arr4 = Arrays.copyOf(arr1, n);
+        Integer[] arr5 = Arrays.copyOf(arr1, n);
 
-        SortHelper.testSort("ImprovedMergeSortTopDown", new ImprovedMergeSortTopDown(), arr1); // 404ms
-        SortHelper.testSort("ThreeWaysQuickSort", new ThreeWaysQuickSort(), arr2); // 480ms
-        SortHelper.testSort("NormalHeapSort", new NormalHeapSort(), arr3); // 659ms
-        SortHelper.testSort("ImprovedHeapSort", new ImprovedHeapSort(), arr4); // 612ms
+        SortHelper.testSort("ImprovedMergeSortTopDown", new ImprovedMergeSortTopDown(), arr1);
+        SortHelper.testSort("ThreeWaysQuickSort", new ThreeWaysQuickSort(), arr2);
+        SortHelper.testSort("GeneralHeapSort", new GeneralHeapSort(), arr3);
+        SortHelper.testSort("ImprovedHeapSort", new ImprovedHeapSort(), arr4);
+        SortHelper.testSort("OptimalHeapSort", new OptimalHeapSort(), arr5);
 
         System.out.println("======================");
 
@@ -32,11 +34,13 @@ public class TestSort {
         Integer[] arr11 = Arrays.copyOf(arr10, n);
         Integer[] arr12 = Arrays.copyOf(arr10, n);
         Integer[] arr13 = Arrays.copyOf(arr10, n);
+        Integer[] arr14 = Arrays.copyOf(arr10, n);
 
-        SortHelper.testSort("ImprovedMergeSortTopDown", new ImprovedMergeSortTopDown(), arr10); // 108ms
-        SortHelper.testSort("ThreeWaysQuickSort", new ThreeWaysQuickSort(), arr11); // 144ms
-        SortHelper.testSort("NormalHeapSort", new NormalHeapSort(), arr12); // 231ms
-        SortHelper.testSort("ImprovedHeapSort", new ImprovedHeapSort(), arr13); // 183ms
+        SortHelper.testSort("ImprovedMergeSortTopDown", new ImprovedMergeSortTopDown(), arr10);
+        SortHelper.testSort("ThreeWaysQuickSort", new ThreeWaysQuickSort(), arr11);
+        SortHelper.testSort("GeneralHeapSort", new GeneralHeapSort(), arr12);
+        SortHelper.testSort("ImprovedHeapSort", new ImprovedHeapSort(), arr13);
+        SortHelper.testSort("OptimalHeapSort", new OptimalHeapSort(), arr14);
 
         System.out.println("======================");
 
@@ -45,10 +49,31 @@ public class TestSort {
         Integer[] arr21 = Arrays.copyOf(arr20, n);
         Integer[] arr22 = Arrays.copyOf(arr20, n);
         Integer[] arr23 = Arrays.copyOf(arr20, n);
+        Integer[] arr24 = Arrays.copyOf(arr20, n);
 
-        SortHelper.testSort("ImprovedMergeSortTopDown", new ImprovedMergeSortTopDown(), arr20); // 1636ms
-        SortHelper.testSort("ThreeWaysQuickSort", new ThreeWaysQuickSort(), arr21); // 19ms
-        SortHelper.testSort("NormalHeapSort", new NormalHeapSort(), arr22); // 169ms
-        SortHelper.testSort("ImprovedHeapSort", new ImprovedHeapSort(), arr23); // 161ms
+        SortHelper.testSort("ImprovedMergeSortTopDown", new ImprovedMergeSortTopDown(), arr20);
+        SortHelper.testSort("ThreeWaysQuickSort", new ThreeWaysQuickSort(), arr21);
+        SortHelper.testSort("GeneralHeapSort", new GeneralHeapSort(), arr22);
+        SortHelper.testSort("ImprovedHeapSort", new ImprovedHeapSort(), arr23);
+        SortHelper.testSort("OptimalHeapSort", new OptimalHeapSort(), arr24);
     }
+    /*
+    ImprovedMergeSortTopDown耗时:419ms
+    ThreeWaysQuickSort耗时:719ms
+    GeneralHeapSort耗时:679ms
+    ImprovedHeapSort耗时:613ms
+    OptimalHeapSort耗时:570ms
+    ======================
+    ImprovedMergeSortTopDown耗时:68ms
+    ThreeWaysQuickSort耗时:139ms
+    GeneralHeapSort耗时:230ms
+    ImprovedHeapSort耗时:184ms
+    OptimalHeapSort耗时:153ms
+    ======================
+    ImprovedMergeSortTopDown耗时:131ms
+    ThreeWaysQuickSort耗时:28ms
+    GeneralHeapSort耗时:152ms
+    ImprovedHeapSort耗时:164ms
+    OptimalHeapSort耗时:155ms
+     */
 }

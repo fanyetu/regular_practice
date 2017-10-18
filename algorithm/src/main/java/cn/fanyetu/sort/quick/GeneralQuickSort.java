@@ -11,7 +11,7 @@ import cn.fanyetu.sort.common.SortHelper;
  * 有可能会退化为n2级别的算法
  *
  */
-public class NormalQuickSort implements Sort {
+public class GeneralQuickSort implements Sort {
 
     @Override
     public <T extends Comparable<T>> void sort(T[] arr) {

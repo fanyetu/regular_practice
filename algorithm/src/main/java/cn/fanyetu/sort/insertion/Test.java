@@ -13,7 +13,7 @@ public class Test {
         Integer[] arr2 = Arrays.copyOf(arr1, arr1.length); // 拷贝数组
         Integer[] arr3 = Arrays.copyOf(arr1, arr1.length);
 
-        SortHelper.testSort("normalInsertionSort", new NormalInsertionSort(), arr1); // 14059ms
+        SortHelper.testSort("normalInsertionSort", new GeneralInsertionSort(), arr1); // 14059ms
         SortHelper.testSort("improvedInsertionSort", new ImprovedInsertionSort(), arr2); // 9917ms
         SortHelper.testSort("selectionSort", new SelectionSort(), arr3); // 11689ms
 
@@ -25,7 +25,7 @@ public class Test {
         Integer[] arr6 = Arrays.copyOf(arr4, arr4.length);
         Integer[] arr7 = Arrays.copyOf(arr4, arr4.length);
 
-        SortHelper.testSort("normalInsertionSort", new NormalInsertionSort(), arr4); // 36ms
+        SortHelper.testSort("normalInsertionSort", new GeneralInsertionSort(), arr4); // 36ms
         SortHelper.testSort("improvedInsertionSort", new ImprovedInsertionSort(), arr5); // 30ms
         SortHelper.testSort("selectionSort", new SelectionSort(), arr6); // 7868ms
 

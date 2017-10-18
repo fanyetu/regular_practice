@@ -19,7 +19,7 @@ public class Test {
         Integer[] arr4 = Arrays.copyOf(arr1, n);
 
         SortHelper.testSort("ImprovedMergeSortTopDown", new ImprovedMergeSortTopDown(), arr1); // 404ms
-        SortHelper.testSort("NormalQuickSort", new NormalQuickSort(), arr2); // 482ms
+        SortHelper.testSort("GeneralQuickSort", new GeneralQuickSort(), arr2); // 482ms
         SortHelper.testSort("ImprovedQuickSort", new ImprovedQuickSort(), arr3); // 345ms
         SortHelper.testSort("ThreeWaysQuickSort",new ThreeWaysQuickSort(),arr4); // 480ms
 

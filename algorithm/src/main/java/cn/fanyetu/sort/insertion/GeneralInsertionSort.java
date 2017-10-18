@@ -14,7 +14,7 @@ import static cn.fanyetu.sort.common.SortHelper.swap;
  * 插入排序和人们整理扑克牌的思路类似，一个元素一个元素的进行操作，将每一个元素插入到之前已经有序的序列中的适当的位置。
  * O(n2)
  */
-public class NormalInsertionSort implements Sort {
+public class GeneralInsertionSort implements Sort {
 
     @Override
     public <T extends Comparable<T>> void sort(T[] arr) {
