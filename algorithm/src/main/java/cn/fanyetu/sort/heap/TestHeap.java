@@ -15,6 +15,10 @@ public class TestHeap {
         }
 
         maxHeap.treePrint();
+
+        while (!maxHeap.isEmpty()) {
+            System.out.print(maxHeap.extractMax()+" ");
+        }
     }
 
 }
