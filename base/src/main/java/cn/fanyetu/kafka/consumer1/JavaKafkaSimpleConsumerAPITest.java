@@ -26,7 +26,7 @@ public class JavaKafkaSimpleConsumerAPITest {
 		}
 
 		// 获取该topic所属的所有分区ID列表
-		System.out.println(example.fetchTopicPartitionIDs(seeds, topic, 100000, 64 * 1024,
+		System.out.println(JavaKafkaSimpleConsumerAPI.fetchTopicPartitionIDs(seeds, topic, 100000, 64 * 1024,
 				"client-id"));
 	}
 }

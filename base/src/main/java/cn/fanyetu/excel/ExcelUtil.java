@@ -22,7 +22,7 @@ public class ExcelUtil {
 
     public static void main(String[] args) throws FileNotFoundException, IOException, ParseException {
     	Scanner input=new Scanner(System.in);
-    	System.out.println("ÇëÊäÈëÈÕÆÚ×ª»»¸ñÊ½");
+    	System.out.println("è¯·è¾“å…¥æ—¥æœŸè½¬æ¢æ ¼å¼");
     	String format = input.nextLine();
     	
     	File file = new File("d:/1.xls");
@@ -59,11 +59,11 @@ public class ExcelUtil {
 
 //                switch (cell.getCellType())
 //                {
-//                    case HSSFCell.CELL_TYPE_NUMERIC: // Êı×Ö
+//                    case HSSFCell.CELL_TYPE_NUMERIC: // æ•°å­—
 //                                    System.out.print(cell.getNumericCellValue()
 //                                + "   ");
 //                        break;
-//                    case HSSFCell.CELL_TYPE_STRING: // ×Ö·û´®
+//                    case HSSFCell.CELL_TYPE_STRING: // å­—ç¬¦ä¸²
 //                        System.out.print(cell.getStringCellValue()
 //                                + "   ");
 //                        break;
@@ -71,17 +71,17 @@ public class ExcelUtil {
 //                        System.out.println(cell.getBooleanCellValue()
 //                                + "   ");
 //                        break;
-//                    case HSSFCell.CELL_TYPE_FORMULA: // ¹«Ê½
+//                    case HSSFCell.CELL_TYPE_FORMULA: // å…¬å¼
 //                        System.out.print(cell.getCellFormula() + "   ");
 //                        break;
-//                    case HSSFCell.CELL_TYPE_BLANK: // ¿ÕÖµ
+//                    case HSSFCell.CELL_TYPE_BLANK: // ç©ºå€¼
 //                        System.out.println(" ");
 //                        break;
-//                    case HSSFCell.CELL_TYPE_ERROR: // ¹ÊÕÏ
+//                    case HSSFCell.CELL_TYPE_ERROR: // æ•…éšœ
 //                        System.out.println(" ");
 //                        break;
 //                    default:
-//                        System.out.print("Î´ÖªÀàĞÍ   ");
+//                        System.out.print("æœªçŸ¥ç±»å‹   ");
 //                        break;
 //                }
             }
@@ -93,7 +93,7 @@ public class ExcelUtil {
 		            Date e = sdf.parse(end);
 		            Calendar rightNow = Calendar.getInstance();
 		    		rightNow.setTime(e);
-		    		rightNow.add(Calendar.YEAR, -1);// ÈÕÆÚ¼õ1Äê
+		    		rightNow.add(Calendar.YEAR, -1);// æ—¥æœŸå‡1å¹´
 		    		Date dt1 = rightNow.getTime();
 		    		
 		    		Date s = sdf.parse(start);
@@ -110,7 +110,7 @@ public class ExcelUtil {
             System.out.print("\n");
         }
         
-        System.out.println("²»·ûºÏÌõ¼şµÄĞĞºÅÎª:"+warningList);
-        System.out.println("¿ÉÄÜÓĞ´íÎóµÄĞĞºÅÎª:"+errorList);
+        System.out.println("ä¸ç¬¦åˆæ¡ä»¶çš„è¡Œå·ä¸º:"+warningList);
+        System.out.println("å¯èƒ½æœ‰é”™è¯¯çš„è¡Œå·ä¸º:"+errorList);
 	}
 }

@@ -76,8 +76,12 @@ public class ImprovedQuickSort implements Sort {
         // arr[l+1...i)<=v && arr(j...r]>=v
         int i = l + 1, j = r;
         while (true) { // i向前移动，j向后移动
-            while (i <= r && SortHelper.less(arr[i], v)) i++;
-            while (j >= l + 1 && SortHelper.less(v, arr[j])) j--;
+            while (i <= r && SortHelper.less(arr[i], v)) {
+                i++;
+            }
+            while (j >= l + 1 && SortHelper.less(v, arr[j])) {
+                j--;
+            }
             if (i > j) {
                 break;
             }

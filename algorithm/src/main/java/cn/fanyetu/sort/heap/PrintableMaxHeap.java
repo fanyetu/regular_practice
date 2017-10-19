@@ -53,12 +53,14 @@ public class PrintableMaxHeap extends MaxHeap<Comparable<Integer>> {
             }
             System.out.println(line1);
 
-            if( level == maxLevel - 1 )
+            if( level == maxLevel - 1 ) {
                 break;
+            }
 
             String line2 = new String(new char[maxLevelNumber*3-1]).replace('\0', ' ');
-            for( int indexCurLevel = 0 ; indexCurLevel < curLevelNumber ; indexCurLevel ++ )
-                line2 = putBranchInLine( line2 , indexCurLevel , curTreeMaxLevelNumber*3-1 );
+            for( int indexCurLevel = 0 ; indexCurLevel < curLevelNumber ; indexCurLevel ++ ) {
+                line2 = putBranchInLine(line2, indexCurLevel, curTreeMaxLevelNumber * 3 - 1);
+            }
             System.out.println(line2);
 
             curTreeMaxLevelNumber /= 2;
@@ -70,16 +72,17 @@ public class PrintableMaxHeap extends MaxHeap<Comparable<Integer>> {
         int subTreeWidth = (curTreeWidth - 1) / 2;
         int offset = indexCurLevel * (curTreeWidth+1) + subTreeWidth;
         assert offset + 1 < line.length();
-        if( num >= 10 )
-            line = line.substring(0, offset+0) + num.toString()
-                    + line.substring(offset+2);
-        else{
-            if( isLeft)
-                line = line.substring(0, offset+0) + num.toString()
-                        + line.substring(offset+1);
-            else
-                line = line.substring(0, offset+1) + num.toString()
-                        + line.substring(offset+2);
+        if( num >= 10 ) {
+            line = line.substring(0, offset + 0) + num.toString()
+                    + line.substring(offset + 2);
+        } else{
+            if( isLeft) {
+                line = line.substring(0, offset + 0) + num.toString()
+                        + line.substring(offset + 1);
+            } else {
+                line = line.substring(0, offset + 1) + num.toString()
+                        + line.substring(offset + 2);
+            }
         }
         return line;
     }
