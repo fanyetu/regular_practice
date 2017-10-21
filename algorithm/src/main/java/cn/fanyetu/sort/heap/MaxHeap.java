@@ -9,6 +9,7 @@ import static cn.fanyetu.sort.common.SortHelper.swap;
  * 使用数组实现
  * <p>
  * 堆的入队时间复杂度为logn,出队时间复杂度也为logn
+ * @author zhanghaonan
  */
 public class MaxHeap<T extends Comparable> {
 
