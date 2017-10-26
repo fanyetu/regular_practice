@@ -22,6 +22,14 @@ public class BST<Key extends Comparable<Key>, Value> {
             this.left = null;
             this.right = null;
         }
+
+        @Override
+        public String toString() {
+            return "Node{" +
+                    "key=" + key +
+                    ", value=" + value +
+                    '}';
+        }
     }
 
     private Node root;
@@ -33,6 +41,67 @@ public class BST<Key extends Comparable<Key>, Value> {
     public BST() {
         this.root = null;
         this.count = 0;
+    }
+
+    /**
+     * 后序遍历
+     * 用于释放二叉搜索树
+     */
+    public void postOrder(){
+        postOrder(this.root);
+    }
+
+    /**
+     * 后序遍历
+     * @param node
+     */
+    private void postOrder(Node node){
+        if (node != null){
+            postOrder(node.left);
+            postOrder(node.right);
+            System.out.println(node);
+        }
+    }
+
+    /**
+     * 中序遍历
+     * 先打印左孩子，再打印自身，最后打印右孩子
+     * 用户输入输出节点进行排序
+     */
+    public void inOrder(){
+        inOrder(this.root);
+    }
+
+    /**
+     * 中序遍历
+     * @param node
+     */
+    private void inOrder(Node node){
+        if (node != null){
+            inOrder(node.left);
+            System.out.println(node);
+            inOrder(node.right);
+        }
+    }
+
+    /**
+     * 前序遍历
+     * 先打印自身，在打印左孩子和右孩子
+     */
+    public void preOrder(){
+        preOrder(this.root);
+    }
+
+    /**
+     * 前序遍历
+     * @param node
+     */
+    private void preOrder(Node node){
+        if (node != null){
+            System.out.println(node);
+            preOrder(node.left);
+            preOrder(node.right);
+        }
     }
 
     /**
