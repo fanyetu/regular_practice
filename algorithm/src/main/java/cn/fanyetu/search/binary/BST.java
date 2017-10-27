@@ -44,6 +44,30 @@ public class BST<Key extends Comparable<Key>, Value> {
     }
 
     /**
+     * 使用后序遍历进行删除操作
+     */
+    public void destroy(){
+        destroy(this.root);
+    }
+
+    /**
+     * 使用后序遍历进行删除操作
+     * @param node
+     */
+    private void destroy(Node node){
+        if (node != null){
+            destroy(node.left);
+            destroy(node.right);
+
+            node = null;
+            count--;
+        }
+    }
+
+    /*
+    前序遍历、中序遍历和后序遍历都是深度优先（指的是先遍历到树的最深的节点，没有了再通过回溯的方式进行遍历）的遍历方式。
+     */
+    /**
      * 后序遍历
      * 用于释放二叉搜索树
      */
