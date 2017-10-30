@@ -10,8 +10,45 @@ import java.util.Vector;
 public class BSTTest {
 
     @Test
+    public void test5(){
+        BST<Integer, String> bst = generateBST(10);
+
+        bst.inOrder();
+        System.out.println("=============");
+
+        bst.removeMin();
+        bst.inOrder();
+
+        System.out.println("=============");
+
+        bst.removeMax();
+        bst.inOrder();
+    }
+
+    @Test
+    public void test4(){
+        BST<Integer, String> bst = generateBST(100);
+
+        bst.inOrder();
+        System.out.println("=============");
+
+        Integer minimum = bst.minimum();
+        System.out.println(minimum);
+
+        Integer maximum = bst.maximum();
+        System.out.println(maximum);
+    }
+
+    @Test
     public void test3(){
-        int N = 100;
+        BST<Integer, String> bst = generateBST(100);
+//        bst.preOrder();
+//        bst.inOrder();
+//        bst.postOrder();
+        bst.levelOrder();
+    }
+
+    private BST<Integer,String> generateBST(int N){
         Integer[] arr = new Integer[N];
         for(int i = 0 ; i < N ; i ++) {
             arr[i] = new Integer(i);
@@ -28,10 +65,7 @@ public class BSTTest {
         for(int i = 0 ; i < N ; i ++) {
             bst.insert(new Integer(arr[i]), Integer.toString(arr[i]));
         }
-
-//        bst.preOrder();
-//        bst.inOrder();
-        bst.postOrder();
+        return bst;
     }
 
     @Test
