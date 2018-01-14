@@ -13,6 +13,7 @@
         <module>back-eb</module>
         <module>util</module>
         <module>algorithm</module>
+        <module>security</module>
     </modules>
 
     <!-- 用来设置版本号 -->
