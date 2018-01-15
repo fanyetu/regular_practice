@@ -39,6 +39,10 @@ public class UserControllerTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
     }
 
+    public void whenUploadSuccess() throws Exception{
+
+    }
+
     @Test
     public void whenDeleteSuccess() throws Exception {
         mockMvc.perform(delete("/user/1")
