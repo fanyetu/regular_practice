@@ -1,13 +1,17 @@
 package cn.fanyetu.dto;
 
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * @author zhanghaonan
  * @date 2018/1/14
  */
 public class UserQueryCondition {
 
+    @ApiModelProperty(value = "用户名")
     private String username;
 
+    @ApiModelProperty(value = "用户年龄")
     private int age;
 
     private int ageTo;

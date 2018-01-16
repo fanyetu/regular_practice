@@ -4,6 +4,8 @@ import cn.fanyetu.dto.User;
 import cn.fanyetu.dto.UserQueryCondition;
 import cn.fanyetu.exception.UserNotExistsException;
 import com.fasterxml.jackson.annotation.JsonView;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.springframework.data.domain.Pageable;
@@ -66,7 +68,7 @@ public class UserController {
      */
     @GetMapping("/{id:\\d+}")
     @JsonView(User.UserDetailView.class)
-    public User getInfo(@PathVariable("id") String id) {
+    public User getInfo(@ApiParam(value = "用户id") @PathVariable("id") String id) {
 
 //        UserNotExistsException userNotExistsException = new UserNotExistsException();
 //        userNotExistsException.setId(id);
@@ -81,6 +83,7 @@ public class UserController {
 
     @GetMapping
     @JsonView(User.UserSimpleView.class)
+    @ApiOperation(value = "用户查询服务")
     public List<User> query(UserQueryCondition condition,
                             @PageableDefault(size = 15, page = 1, sort = {"username"}, direction = Sort.Direction
                                     .DESC) Pageable pageable) {
