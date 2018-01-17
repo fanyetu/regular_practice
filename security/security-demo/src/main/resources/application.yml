@@ -10,6 +10,6 @@ spring:
 server:
   port: 9091
 # 暂时关闭security http basic验证
-security:
-  basic:
-    enabled: false
+#security:
+#  basic:
+#    enabled: false
