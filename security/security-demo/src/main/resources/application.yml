@@ -13,3 +13,8 @@ server:
 #security:
 #  basic:
 #    enabled: false
+# 配置自定义登录页
+fanyetu:
+  security:
+    browser:
+      loginPage: /demo-login.html

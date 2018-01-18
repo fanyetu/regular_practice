@@ -1,5 +1,7 @@
 package cn.fanyetu.security.browser;
 
+import cn.fanyetu.security.core.properties.SecurityProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,8 +16,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private SecurityProperties securityProperties;
+
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         // 实际中使用自己实现的passwordEncoder
         return new BCryptPasswordEncoder();
     }
@@ -30,11 +35,15 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 //        http.httpBasic()
         http.formLogin()
-                .loginPage("/fanyetu-login.html")
+                .loginPage("/authentication/require")
+                .loginProcessingUrl("/authentication/form") // 告诉spring security登录请求地址
                 .and()
                 .authorizeRequests()
-                .antMatchers("/fanyetu-login.html").permitAll() // 对该页面开发所有访问
+                .antMatchers("/authentication/require",
+                        securityProperties.getBrowser().getLoginPage())
+                .permitAll() // 对该页面开发所有访问
                 .anyRequest()
-                .authenticated();
+                .authenticated()
+                .and().csrf().disable();
     }
 }
