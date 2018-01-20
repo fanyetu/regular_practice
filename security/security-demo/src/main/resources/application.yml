@@ -17,4 +17,5 @@ server:
 fanyetu:
   security:
     browser:
-      loginPage: /demo-login.html
+#      loginPage: /demo-login.html
+      loginType: JSON

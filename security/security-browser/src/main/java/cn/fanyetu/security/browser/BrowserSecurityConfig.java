@@ -1,5 +1,7 @@
 package cn.fanyetu.security.browser;
 
+import cn.fanyetu.security.browser.authentication.AuthenticationFailureHandler;
+import cn.fanyetu.security.browser.authentication.AuthenticationSuccessHandler;
 import cn.fanyetu.security.core.properties.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +21,12 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private SecurityProperties securityProperties;
 
+    @Autowired
+    private AuthenticationSuccessHandler authenticationSuccessHandler;
+
+    @Autowired
+    private AuthenticationFailureHandler authenticationFailureHandler;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         // 实际中使用自己实现的passwordEncoder
@@ -37,6 +45,8 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
         http.formLogin()
                 .loginPage("/authentication/require")
                 .loginProcessingUrl("/authentication/form") // 告诉spring security登录请求地址
+                .successHandler(authenticationSuccessHandler)
+                .failureHandler(authenticationFailureHandler)
                 .and()
                 .authorizeRequests()
                 .antMatchers("/authentication/require",
