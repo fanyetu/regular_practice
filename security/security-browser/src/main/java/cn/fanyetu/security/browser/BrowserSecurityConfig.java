@@ -3,6 +3,7 @@ package cn.fanyetu.security.browser;
 import cn.fanyetu.security.browser.authentication.AuthenticationFailureHandler;
 import cn.fanyetu.security.browser.authentication.AuthenticationSuccessHandler;
 import cn.fanyetu.security.core.properties.SecurityProperties;
+import cn.fanyetu.security.core.validate.code.ValidateCodeFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * @author zhanghaonan
@@ -41,8 +43,12 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http.httpBasic()
-        http.formLogin()
+
+        ValidateCodeFilter validateCodeFilter = new ValidateCodeFilter();
+        validateCodeFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
+
+        http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class) // 在UsernamePasswordAuthenticationFilter之前添加过滤器
+                .formLogin()
                 .loginPage("/authentication/require")
                 .loginProcessingUrl("/authentication/form") // 告诉spring security登录请求地址
                 .successHandler(authenticationSuccessHandler)
@@ -50,6 +56,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/authentication/require",
+                        "/code/image",
                         securityProperties.getBrowser().getLoginPage())
                 .permitAll() // 对该页面开发所有访问
                 .anyRequest()
