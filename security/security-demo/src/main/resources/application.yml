@@ -19,3 +19,8 @@ fanyetu:
     browser:
 #      loginPage: /demo-login.html
       loginType: JSON
+#    code:
+#      image:
+#        length: 6 #图形验证码的长度
+#        width: 100
+#        url: /user,/user/*
