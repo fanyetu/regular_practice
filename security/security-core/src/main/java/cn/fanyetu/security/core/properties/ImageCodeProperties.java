@@ -3,12 +3,14 @@ package cn.fanyetu.security.core.properties;
 /**
  * @author zhanghaonan
  */
-public class ImageCodeProperties {
+public class ImageCodeProperties extends SmsCodeProperties{
+
+    public ImageCodeProperties() {
+        setWidth(4); // 设置图形验证码默认时4位
+    }
 
     private int width = 67;
     private int height = 23;
-    private int length = 4;
-    private int expireIn = 60;
     private String url; // 使用逗号隔开的url列表
 
     public String getUrl() {
@@ -33,21 +35,5 @@ public class ImageCodeProperties {
 
     public void setHeight(int height) {
         this.height = height;
-    }
-
-    public int getLength() {
-        return length;
-    }
-
-    public void setLength(int length) {
-        this.length = length;
-    }
-
-    public int getExpireIn() {
-        return expireIn;
-    }
-
-    public void setExpireIn(int expireIn) {
-        this.expireIn = expireIn;
     }
 }

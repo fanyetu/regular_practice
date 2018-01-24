@@ -16,6 +16,19 @@ public class BrowserProperties {
      */
     private LoginResponseType loginType = LoginResponseType.REDIRECT;
 
+    /**
+     * 记住我过期的时间
+     */
+    private int rememberMeSeconds = 3600;
+
+    public int getRememberMeSeconds() {
+        return rememberMeSeconds;
+    }
+
+    public void setRememberMeSeconds(int rememberMeSeconds) {
+        this.rememberMeSeconds = rememberMeSeconds;
+    }
+
     public LoginResponseType getLoginType() {
         return loginType;
     }

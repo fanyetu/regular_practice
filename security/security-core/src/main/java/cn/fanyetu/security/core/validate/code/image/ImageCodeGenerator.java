@@ -1,6 +1,7 @@
-package cn.fanyetu.security.core.validate.code;
+package cn.fanyetu.security.core.validate.code.image;
 
 import cn.fanyetu.security.core.properties.SecurityProperties;
+import cn.fanyetu.security.core.validate.code.ValidateCodeGenerator;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;
 
@@ -25,7 +26,7 @@ public class ImageCodeGenerator implements ValidateCodeGenerator {
     }
 
     @Override
-    public ImageCode generateImageCode(ServletWebRequest request) {
+    public ImageCode generateCode(ServletWebRequest request) {
         int width = ServletRequestUtils.getIntParameter(request.getRequest(), "width", securityProperties.getCode()
                 .getImage().getWidth());
         int height = ServletRequestUtils.getIntParameter(request.getRequest(), "height", securityProperties.getCode()

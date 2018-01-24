@@ -1,6 +1,8 @@
 package cn.fanyetu.security.core.validate.code;
 
 import cn.fanyetu.security.core.properties.SecurityProperties;
+import cn.fanyetu.security.core.validate.code.image.ImageCode;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -48,7 +50,9 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
         String[] matchUrls = StringUtils.splitByWholeSeparatorPreserveAllTokens(securityProperties.getCode().getImage()
                 .getUrl(), ",");
 
-        urls.addAll(Arrays.asList(matchUrls));
+        if (ArrayUtils.isNotEmpty(matchUrls)) {
+            urls.addAll(Arrays.asList(matchUrls));
+        }
         urls.add("/authentication/form");
     }
 

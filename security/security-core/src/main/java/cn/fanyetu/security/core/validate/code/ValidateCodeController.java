@@ -1,10 +1,11 @@
 package cn.fanyetu.security.core.validate.code;
 
 import cn.fanyetu.security.core.properties.SecurityProperties;
+import cn.fanyetu.security.core.validate.code.image.ImageCode;
+import cn.fanyetu.security.core.validate.code.sms.SmsCodeSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.web.HttpSessionSessionStrategy;
 import org.springframework.social.connect.web.SessionStrategy;
-import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -12,10 +13,8 @@ import org.springframework.web.context.request.ServletWebRequest;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Random;
+import java.util.Map;
 
 /**
  * @author zhanghaonan
@@ -29,8 +28,14 @@ public class ValidateCodeController {
     @Autowired
     private SecurityProperties securityProperties;
 
+//    @Autowired
+//    private ValidateCodeGenerator validateCodeGenerator;
+
     @Autowired
-    private ValidateCodeGenerator validateCodeGenerator;
+    private Map<String,ValidateCodeGenerator> validateCodeGeneratorMap;
+
+    @Autowired
+    private SmsCodeSender smsCodeSender;
 
     // spring 提供的操作session的工具
     private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
@@ -39,13 +44,26 @@ public class ValidateCodeController {
     public void createCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
         ServletWebRequest servletWebRequest = new ServletWebRequest(request);
         // 1.生成验证码
-        ImageCode imageCode = validateCodeGenerator.generateImageCode(servletWebRequest);
+        ImageCode imageCode = (ImageCode) validateCodeGeneratorMap.get("imageCodeGenerator").generateCode(servletWebRequest);
 
         // 2.放入session
         sessionStrategy.setAttribute(servletWebRequest, SESSION_KEY, imageCode);
 
         // 3.返回
         ImageIO.write(imageCode.getImage(), "JPEG", response.getOutputStream());
+    }
+
+    @GetMapping("/code/sms")
+    public void createSms(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        ServletWebRequest servletWebRequest = new ServletWebRequest(request);
+
+        ValidateCode smsCode = validateCodeGeneratorMap.get("smsCodeGenerator").generateCode(servletWebRequest);
+
+        sessionStrategy.setAttribute(servletWebRequest, SESSION_KEY, smsCode);
+
+        String mobile = request.getParameter("mobile");
+        smsCodeSender.send(mobile, smsCode.getCode());
     }
 
 
