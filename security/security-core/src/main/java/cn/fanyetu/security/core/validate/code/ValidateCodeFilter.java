@@ -8,6 +8,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.social.connect.web.HttpSessionSessionStrategy;
 import org.springframework.social.connect.web.SessionStrategy;
+import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestUtils;
@@ -30,6 +31,7 @@ import java.util.Set;
  * @author zhanghaonan
  * @date 2018/1/22
  */
+@Component("validateCodeFilter")
 public class ValidateCodeFilter extends OncePerRequestFilter implements InitializingBean {
 
     private AuthenticationFailureHandler authenticationFailureHandler;
@@ -104,29 +106,29 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
      * @throws ServletRequestBindingException
      */
     private void validate(ServletWebRequest request) throws ServletRequestBindingException {
-        ImageCode codeInSession = (ImageCode) sessionStrategy.getAttribute(request, ValidateCodeController.SESSION_KEY);
-
-        String codeInRequest = ServletRequestUtils.getStringParameter(request.getRequest(), "imageCode");
-
-        if (StringUtils.isBlank(codeInRequest)) {
-            throw new ValidateCodeException("验证码的值不能为空");
-        }
-
-        if (null == codeInSession) {
-            throw new ValidateCodeException("验证码不存在");
-        }
-
-        if (codeInSession.isExpried()) {
-            throw new ValidateCodeException("验证码已过期");
-        }
-
-        if (!StringUtils.equalsIgnoreCase(codeInRequest, codeInSession.getCode())) {
-            throw new ValidateCodeException("验证码不匹配");
-        }
-
-        // 验证成功
-
-        sessionStrategy.removeAttribute(request, ValidateCodeController.SESSION_KEY);
+//        ImageCode codeInSession = (ImageCode) sessionStrategy.getAttribute(request, ValidateCodeController.SESSION_KEY);
+//
+//        String codeInRequest = ServletRequestUtils.getStringParameter(request.getRequest(), "imageCode");
+//
+//        if (StringUtils.isBlank(codeInRequest)) {
+//            throw new ValidateCodeException("验证码的值不能为空");
+//        }
+//
+//        if (null == codeInSession) {
+//            throw new ValidateCodeException("验证码不存在");
+//        }
+//
+//        if (codeInSession.isExpried()) {
+//            throw new ValidateCodeException("验证码已过期");
+//        }
+//
+//        if (!StringUtils.equalsIgnoreCase(codeInRequest, codeInSession.getCode())) {
+//            throw new ValidateCodeException("验证码不匹配");
+//        }
+//
+//        // 验证成功
+//
+//        sessionStrategy.removeAttribute(request, ValidateCodeController.SESSION_KEY);
 
     }
 }
