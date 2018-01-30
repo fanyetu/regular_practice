@@ -2,6 +2,7 @@ package cn.fanyetu.security.core.validate.code.image;
 
 import cn.fanyetu.security.core.properties.SecurityProperties;
 import cn.fanyetu.security.core.validate.code.ValidateCodeGenerator;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;
 

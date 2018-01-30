@@ -31,7 +31,6 @@ import java.util.Set;
  * @author zhanghaonan
  * @date 2018/1/22
  */
-@Component("validateCodeFilter")
 public class ValidateCodeFilter extends OncePerRequestFilter implements InitializingBean {
 
     private AuthenticationFailureHandler authenticationFailureHandler;
@@ -44,6 +43,8 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 
     // spring 提供的path的工具类
     private AntPathMatcher pathMatcher = new AntPathMatcher();
+
+    private ValidateCodeProcesserHolder validateCodeProcesserHolder;
 
     @Override
     public void afterPropertiesSet() throws ServletException {
@@ -66,7 +67,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
         boolean flag = false;
         String uri = request.getRequestURI();
         for (String url : urls) {
-            if (pathMatcher.match(url,uri)){
+            if (pathMatcher.match(url, uri)) {
                 flag = true;
                 break;
             }
@@ -74,7 +75,10 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 
         if (flag) {
             try {
-                validate(new ServletWebRequest(request));
+                ValidateCodeProcesser validateCodeProcesser = validateCodeProcesserHolder.findValidateCodeProcesser
+                        (ValidateCodeType.IMAGE);
+
+                validateCodeProcesser.validate(new ServletWebRequest(request, response));
             } catch (ValidateCodeException e) {
                 authenticationFailureHandler.onAuthenticationFailure(request, response, e);
                 return;
@@ -82,6 +86,15 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
         }
 
         filterChain.doFilter(request, response);
+    }
+
+
+    public ValidateCodeProcesserHolder getValidateCodeProcesserHolder() {
+        return validateCodeProcesserHolder;
+    }
+
+    public void setValidateCodeProcesserHolder(ValidateCodeProcesserHolder validateCodeProcesserHolder) {
+        this.validateCodeProcesserHolder = validateCodeProcesserHolder;
     }
 
     public AuthenticationFailureHandler getAuthenticationFailureHandler() {
@@ -100,35 +113,4 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
         this.securityProperties = securityProperties;
     }
 
-    /**
-     * 验证方法
-     * @param request
-     * @throws ServletRequestBindingException
-     */
-    private void validate(ServletWebRequest request) throws ServletRequestBindingException {
-//        ImageCode codeInSession = (ImageCode) sessionStrategy.getAttribute(request, ValidateCodeController.SESSION_KEY);
-//
-//        String codeInRequest = ServletRequestUtils.getStringParameter(request.getRequest(), "imageCode");
-//
-//        if (StringUtils.isBlank(codeInRequest)) {
-//            throw new ValidateCodeException("验证码的值不能为空");
-//        }
-//
-//        if (null == codeInSession) {
-//            throw new ValidateCodeException("验证码不存在");
-//        }
-//
-//        if (codeInSession.isExpried()) {
-//            throw new ValidateCodeException("验证码已过期");
-//        }
-//
-//        if (!StringUtils.equalsIgnoreCase(codeInRequest, codeInSession.getCode())) {
-//            throw new ValidateCodeException("验证码不匹配");
-//        }
-//
-//        // 验证成功
-//
-//        sessionStrategy.removeAttribute(request, ValidateCodeController.SESSION_KEY);
-
-    }
 }

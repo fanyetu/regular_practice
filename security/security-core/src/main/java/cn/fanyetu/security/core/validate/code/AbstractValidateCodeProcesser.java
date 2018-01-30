@@ -74,7 +74,7 @@ public abstract class AbstractValidateCodeProcesser<C extends ValidateCode>
     @SuppressWarnings("unchecked")
     private C generate(ServletWebRequest request) {
         String type = getValidateCodeType().toString().toLowerCase();
-        String generatorName = type + ValidateCodeProcesser.class.getSimpleName();
+        String generatorName = type + ValidateCodeGenerator.class.getSimpleName();
         ValidateCodeGenerator validateCodeGenerator = validateCodeGenerators.get(generatorName);
         if (null == validateCodeGenerator) {
             throw new ValidateCodeException("验证码生成器" + generatorName + "不存在");
