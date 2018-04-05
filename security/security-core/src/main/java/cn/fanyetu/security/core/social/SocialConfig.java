@@ -29,7 +29,7 @@ public class SocialConfig extends SocialConfigurerAdapter {
         // 生成基于数据库的connection repository，设置加密方式为不加密
         JdbcUsersConnectionRepository repository = new JdbcUsersConnectionRepository(dataSource,
                 connectionFactoryLocator, Encryptors.noOpText());
-        repository.setTablePrefix("t_"); // 设置数据库前缀
+//        repository.setTablePrefix("t_"); // 设置数据库前缀
 
         return repository;
     }
