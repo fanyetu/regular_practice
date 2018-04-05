@@ -11,9 +11,19 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "fanyetu.security")
 public class SecurityProperties {
 
+    private SocialProperties social = new SocialProperties();
+
     private BrowserProperties browser = new BrowserProperties();
 
     private ValidateCodeProperties code = new ValidateCodeProperties();
+
+    public SocialProperties getSocial() {
+        return social;
+    }
+
+    public void setSocial(SocialProperties social) {
+        this.social = social;
+    }
 
     public ValidateCodeProperties getCode() {
         return code;
