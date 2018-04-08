@@ -9,6 +9,8 @@ spring:
     store-type: none
 server:
   port: 9091
+  session:
+    timeout: 10 # spring boot设置session超时时间，session的超时时间最少是一分钟
 # 暂时关闭security http basic验证
 #security:
 #  basic:

@@ -10,6 +10,7 @@
         <module>security-browser</module>
         <module>security-app</module>
         <module>security-demo</module>
+        <module>sso-demo</module>
     </modules>
     <modelVersion>4.0.0</modelVersion>
 
