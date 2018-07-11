@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <excludeFromCompile>
+      <file url="file://$PROJECT_DIR$/base/src/main/java/cn/fanyetu/kafka/consumer2/JavaKafkaConsumerHighAPI.java" />
+      <file url="file://$PROJECT_DIR$/base/src/main/java/cn/fanyetu/kafka/consumer2/JavaKafkaConsumerHighAPITest.java" />
+      <file url="file://$PROJECT_DIR$/base/src/main/java/cn/fanyetu/kafka/KafkaUtil.java" />
+      <file url="file://$PROJECT_DIR$/base/src/main/java/cn/fanyetu/kafka/consumer1/JavaKafkaSimpleConsumerAPI.java" />
+      <file url="file://$PROJECT_DIR$/base/src/main/java/cn/fanyetu/kafka/producer/JavaKafkaProducer.java" />
+      <file url="file://$PROJECT_DIR$/base/src/main/java/cn/fanyetu/kafka/consumer1/JavaKafkaSimpleConsumerAPITest.java" />
+    </excludeFromCompile>
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="algorithm" />
+        <module name="back-eb" />
+        <module name="base" />
+        <module name="core" />
+        <module name="encrypt" />
+        <module name="hadoop" />
+        <module name="poi" />
+        <module name="security-app" />
+        <module name="security-browser" />
+        <module name="security-core" />
+        <module name="security-demo" />
+        <module name="sso-client-a" />
+        <module name="sso-client-b" />
+        <module name="sso-server" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="algorithm" target="1.8" />
+      <module name="back-eb" target="1.8" />
+      <module name="base" target="1.8" />
+      <module name="core" target="1.8" />
+      <module name="encrypt" target="1.8" />
+      <module name="hadoop" target="1.5" />
+      <module name="poi" target="1.8" />
+      <module name="regular_practice" target="1.8" />
+      <module name="security" target="1.8" />
+      <module name="security-app" target="1.8" />
+      <module name="security-browser" target="1.8" />
+      <module name="security-core" target="1.8" />
+      <module name="security-demo" target="1.8" />
+      <module name="sso-client-a" target="1.8" />
+      <module name="sso-client-b" target="1.8" />
+      <module name="sso-demo" target="1.8" />
+      <module name="sso-server" target="1.8" />
+      <module name="util" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
