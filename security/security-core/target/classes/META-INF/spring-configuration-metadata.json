@@ -1,0 +1,27 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "cn.fanyetu.security.core.properties.SecurityProperties",
+      "name": "fanyetu.security",
+      "type": "cn.fanyetu.security.core.properties.SecurityProperties"
+    }
+  ],
+  "properties": [
+    {
+      "sourceType": "cn.fanyetu.security.core.properties.SecurityProperties",
+      "name": "fanyetu.security.browser",
+      "type": "cn.fanyetu.security.core.properties.BrowserProperties"
+    },
+    {
+      "sourceType": "cn.fanyetu.security.core.properties.SecurityProperties",
+      "name": "fanyetu.security.code",
+      "type": "cn.fanyetu.security.core.properties.ValidateCodeProperties"
+    },
+    {
+      "sourceType": "cn.fanyetu.security.core.properties.SecurityProperties",
+      "name": "fanyetu.security.social",
+      "type": "cn.fanyetu.security.core.properties.SocialProperties"
+    }
+  ]
+}

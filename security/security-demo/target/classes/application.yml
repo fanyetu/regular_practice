@@ -1,0 +1,30 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/security_demo?useUnicode=yes&characterEncoding=UTF-8&useSSL=false
+    username: root
+    password: 111111
+  # 暂时关闭session存储
+  session:
+    store-type: none
+server:
+  port: 9091
+# 暂时关闭security http basic验证
+#security:
+#  basic:
+#    enabled: false
+# 配置自定义登录页
+fanyetu:
+  security:
+    browser:
+#      loginPage: /demo-login.html
+      loginType: JSON
+#    code:
+#      image:
+#        length: 6 #图形验证码的长度
+#        width: 100
+#        url: /user,/user/*
+    social:
+      qq:
+        app-id: wxd99431bbff8305a0
+        app-secret: 60f78681d063590a469f1b297feff3c4
