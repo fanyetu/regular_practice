@@ -7,18 +7,8 @@ package cn.fanyetu.graph;
  * @author zhanghaonan
  * @date 2018/8/6
  */
-public class DenseGraph implements Graph {
+public class DenseGraph extends AbstractGraph implements Graph {
 
-
-    /**
-     * 节点和边的数量
-     */
-    private int n, e;
-
-    /**
-     * 是否为有向图
-     */
-    private boolean direction;
 
     /**
      * 邻接矩阵，表示图
@@ -32,9 +22,7 @@ public class DenseGraph implements Graph {
      * @param direction
      */
     public DenseGraph(int n, boolean direction) {
-        this.n = n;
-        this.e = 0;
-        this.direction = direction;
+        super(n, direction);
         // g初始化为n*n的布尔矩阵, 每一个g[i][j]均为false, 表示没有任和边
         this.g = new boolean[n][n];
     }
@@ -45,6 +33,7 @@ public class DenseGraph implements Graph {
      * @param v
      * @param w
      */
+    @Override
     public void addEdge(int v, int w) {
         assert v >= 0 && v < n;
         assert w >= 0 && w < n;
@@ -70,27 +59,10 @@ public class DenseGraph implements Graph {
      * @param w
      * @return
      */
+    @Override
     public boolean hasEdge(int v, int w) {
         assert v >= 0 && v < n;
         assert w >= 0 && w < n;
         return this.g[v][w];
-    }
-
-    /**
-     * 返回节点数
-     *
-     * @return
-     */
-    public int N() {
-        return this.n;
-    }
-
-    /**
-     * 返回边数
-     *
-     * @return
-     */
-    public int E() {
-        return this.e;
     }
 }

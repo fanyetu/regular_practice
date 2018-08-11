@@ -7,4 +7,11 @@ package cn.fanyetu.graph;
 public interface Graph {
 
 
+    void addEdge(int v, int w);
+
+    boolean hasEdge(int v, int w);
+
+    int N();
+
+    int E();
 }
