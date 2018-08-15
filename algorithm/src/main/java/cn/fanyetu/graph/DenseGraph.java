@@ -1,5 +1,8 @@
 package cn.fanyetu.graph;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 稠密图
  * 使用邻接矩阵实现
@@ -25,6 +28,36 @@ public class DenseGraph extends AbstractGraph implements Graph {
         super(n, direction);
         // g初始化为n*n的布尔矩阵, 每一个g[i][j]均为false, 表示没有任和边
         this.g = new boolean[n][n];
+    }
+
+    /**
+     * 展示图
+     */
+    @Override
+    public void show(){
+        for (int i = 0; i < this.n; i++) {
+            System.out.print(i + ": ");
+            for (int j = 0; j < this.n; j++) {
+                System.out.print((this.g[i][j]?1:0) + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    /**
+     * 返回一个定点的所有临边
+     * @param v
+     */
+    @Override
+    public Iterable<Integer> adj(int v){
+        assert v>=0 && v < this.n;
+        List<Integer> adjV = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            if (g[v][i]){
+                adjV.add(i);
+            }
+        }
+        return adjV;
     }
 
     /**

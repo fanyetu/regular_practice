@@ -1,6 +1,7 @@
 package cn.fanyetu.graph;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -28,6 +29,33 @@ public class SparseGraph extends AbstractGraph implements Graph {
         for (int i = 0; i < n; i++) {
             g[i] = new ArrayList<>();
         }
+    }
+
+    /**
+     * 展示图
+     */
+    @Override
+    public void show() {
+        for (int i = 0; i < n; i++) {
+            Iterable<Integer> adj = this.adj(i);
+            Iterator<Integer> iterator = adj.iterator();
+            System.out.print(i+ ": ");
+            while (iterator.hasNext()){
+                System.out.print(iterator.next() + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    /**
+     * 返回一个定点的所有临边
+     * 因为使用邻接表实现，所以开销是最小的
+     * @param v
+     */
+    @Override
+    public Iterable<Integer> adj(int v){
+        assert v>=0 && v < this.n;
+        return this.g[v];
     }
 
     /**
