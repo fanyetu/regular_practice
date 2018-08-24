@@ -4,14 +4,14 @@
 		"ignore": []
 	},
 	"setting": {
-		"urlCheck": true,
-		"es6": true,
+		"urlCheck": false,
+		"es6": false,
 		"postcss": true,
 		"minified": true,
 		"newFeature": true
 	},
-  "miniprogramRoot": "./dist/",
-  "qcloudRoot": "./server/",
+	"miniprogramRoot": "./dist/",
+	"qcloudRoot": "./server/",
 	"compileType": "miniprogram",
 	"libVersion": "2.2.3",
 	"appid": "wx2671da7326ae6358",

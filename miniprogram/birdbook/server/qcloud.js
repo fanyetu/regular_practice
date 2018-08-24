@@ -4,7 +4,7 @@ const qcloud = require('wafer-node-sdk')
 // 获取基础配置
 const configs = require('./config')
 
-// 获取 sdk.config
+// 获取 sdk.Config
 const sdkConfig = (() => {
     const sdkConfigPath = '/data/release/sdk.config.json'
 
@@ -13,7 +13,7 @@ const sdkConfig = (() => {
         const stats = fs.statSync(sdkConfigPath)
 
         if (!stats.isFile()) {
-            console.log('sdk.config.json 不存在，将使用 config.js 中的配置')
+            console.log('sdk.config.json 不存在，将使用 Config.js 中的配置')
             return {}
         }
     } catch (e) {
@@ -32,5 +32,5 @@ const sdkConfig = (() => {
 })()
 
 // 初始化 SDK
-// 将基础配置和 sdk.config 合并传入 SDK 并导出初始化完成的 SDK
+// 将基础配置和 sdk.Config 合并传入 SDK 并导出初始化完成的 SDK
 module.exports = qcloud(Object.assign({}, sdkConfig, configs))

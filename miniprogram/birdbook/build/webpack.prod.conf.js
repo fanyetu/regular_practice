@@ -51,7 +51,7 @@ var webpackConfig = merge(baseWebpackConfig, {
     // you can customize output by editing /index.html
     // see https://github.com/ampedandwired/html-webpack-plugin
     // new HtmlWebpackPlugin({
-    //   filename: config.build.index,
+    //   filename: Config.build.index,
     //   template: 'index.html',
     //   inject: true,
     //   minify: {
@@ -87,7 +87,7 @@ var webpackConfig = merge(baseWebpackConfig, {
   ]
 })
 
-// if (config.build.productionGzip) {
+// if (Config.build.productionGzip) {
 //   var CompressionWebpackPlugin = require('compression-webpack-plugin')
 
 //   webpackConfig.plugins.push(
@@ -96,7 +96,7 @@ var webpackConfig = merge(baseWebpackConfig, {
 //       algorithm: 'gzip',
 //       test: new RegExp(
 //         '\\.(' +
-//         config.build.productionGzipExtensions.join('|') +
+//         Config.build.productionGzipExtensions.join('|') +
 //         ')$'
 //       ),
 //       threshold: 10240,
