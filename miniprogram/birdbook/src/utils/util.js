@@ -19,3 +19,44 @@ export function get (url) {
     })
   })
 }
+
+/**
+ * 展示loading
+ * @param title
+ */
+export function showLoading (title='请稍等') {
+  wx.showLoading({
+    title
+  })
+}
+
+/**
+ * 关闭loading
+ */
+export function hideLoading () {
+  wx.hideLoading()
+}
+
+/**
+ * 展示成功提示
+ * @param text
+ */
+export function showSuccess (text) {
+  wx.showToast({
+    title: text,
+    icon: 'success'
+  })
+}
+
+/**
+ * 展示提示狂
+ * @param title
+ * @param message
+ */
+export function showModal (title, message) {
+  wx.showModal({
+    title: title,
+    content: message,
+    showCancel: false
+  })
+}

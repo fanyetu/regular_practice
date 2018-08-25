@@ -79,6 +79,10 @@ module.exports = {
         ]
       },
       {
+        // 配置less-loader
+        test: /\.less$/,
+        loader: "style-loader!css-loader!less-loader", },
+      {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
         options: {
