@@ -33,5 +33,7 @@ router.get('/message', controllers.message.get)
 router.post('/message', controllers.message.post)
 
 router.get('/demo', controllers.demo)
+// 添加图书接口
+router.post('/addBook', controllers.addBook)
 
 module.exports = router

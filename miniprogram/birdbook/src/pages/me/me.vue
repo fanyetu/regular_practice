@@ -12,7 +12,8 @@
 </template>
 <script>
   import qcloud from 'wafer2-client-sdk'
-  import { showSuccess, showModal, showLoading, hideLoading } from '@/utils/util'
+  import Config from '@/utils/config'
+  import { post, showSuccess, showModal, showLoading, hideLoading } from '@/utils/util'
 
   const USER_INFO_KEY = 'userinfo'
 
@@ -38,13 +39,22 @@
       }
     },
     methods: {
-      addBook(){
-
+      addBook (isbn) {
+        post(Config.addBook, {
+          isbn,
+          openId: this.userinfo.openId
+        }).then((res)=>{
+          showSuccess('添加图书成功')
+        })
       },
       scanCode () {
         wx.scanCode({
           success: (res) => {
-            console.log(res)
+            if (res.result) {
+              this.addBook(res.result)
+            } else {
+              showModal('错误', '没有识别到图书')
+            }
           }
         })
       },

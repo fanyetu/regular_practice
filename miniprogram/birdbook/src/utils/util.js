@@ -1,18 +1,42 @@
-import Config from './config'
-
 /**
  * 封装get请求
  * @param url
+ * @param data
  * @returns {Promise<any>}
  */
-export function get (url) {
-  return new Promise((resolve, reject) => {
+export function get (url, data) {
+  return request(url, 'GET', data)
+}
+
+/**
+ * post请求
+ * @param url
+ * @param data
+ */
+export function post (url, data) {
+  return requrest(url, 'POST', data)
+}
+
+/**
+ * 通用请求
+ * @param url
+ * @param method
+ * @param data
+ * @returns {Promise<any>}
+ */
+export function requrest (url, method, data) {
+  showLoading()
+  return new Promise((resolve, reject)=>{
     wx.request({
-      url: Config.host + url,
+      url,
+      method,
+      data,
       success: function (res) {
+        hideLoading()
         if (res.data.code === 0) {
           resolve(res.data.data)
         } else {
+          showModal('错误', res.data.data.msg || '请求失败')
           reject(res.data)
         }
       }
