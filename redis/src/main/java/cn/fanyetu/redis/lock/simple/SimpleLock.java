@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -17,13 +18,13 @@ public class SimpleLock {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private StringRedisTemplate redisTemplate;
+    protected StringRedisTemplate redisTemplate;
 
     public static final int DEFAULT_ACQUIRE_TIMEOUT = 100;
 
     public static final String LOCK_PREFIX = "lock:";
 
-    private String identifier;
+    protected String identifier;
 
     /**
      * 构造方法
@@ -99,12 +100,23 @@ public class SimpleLock {
         return false;
     }
 
-    private String genLockName(String lockName){
+    protected String genLockName(String lockName){
         return LOCK_PREFIX + lockName;
     }
 
-    private boolean setnx(String key, String value){
+    protected boolean setnx(String key, String value){
         return redisTemplate.opsForValue().setIfAbsent(key, value);
+    }
+
+    /**
+     * setnx并设置超时时间
+     * @param key
+     * @param value
+     * @param expire 毫秒
+     * @return
+     */
+    protected boolean setnx(String key, String value, long expire){
+        return redisTemplate.opsForValue().setIfAbsent(key, value, expire, TimeUnit.MILLISECONDS);
     }
 
 }
