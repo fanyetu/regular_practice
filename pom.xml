@@ -17,6 +17,7 @@
         <module>hadoop</module>
         <module>sharding-jdbc-demo</module>
         <module>redis</module>
+        <module>rabbitmq-practices</module>
     </modules>
 
     <!-- 用来设置版本号 -->
