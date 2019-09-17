@@ -50,8 +50,8 @@ public class WordCountLocalApp {
         job.setOutputValueClass(IntWritable.class);
 
         // 设置输入和输出的文件
-        FileInputFormat.setInputPaths(job, new Path("input"));
-        FileOutputFormat.setOutputPath(job, new Path("output"));
+        FileInputFormat.setInputPaths(job, new Path("hadoop/input"));
+        FileOutputFormat.setOutputPath(job, new Path("hadoop/output"));
 
         // 提交job
         boolean result = job.waitForCompletion(true);
