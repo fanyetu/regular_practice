@@ -9,18 +9,15 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
-import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 
 /**
- * Driver：配置Mapper，Reducer的相关属性
- * 提交到本地运行，开发过程中使用
+ * 使用Combiner进行提前聚合
  *
  * @author zhanghaonan
- * @date 2019/9/16
+ * @date 2019/9/17
  */
-public class WordCountApp {
+public class WordCountCombinerApp {
 
     static {
         try {
@@ -50,6 +47,9 @@ public class WordCountApp {
         // 设置Job相关的参数：Mapper和Reducer对应的类
         job.setMapperClass(WordCountMapper.class);
         job.setReducerClass(WordCountReducer.class);
+
+        // 设置Combiner的class，这里Combiner的操作和reduce的操作是一样的
+        job.setCombinerClass(WordCountReducer.class);
 
         // 设置Job相关的参数：Mapper的输出类型
         job.setMapOutputKeyClass(Text.class);

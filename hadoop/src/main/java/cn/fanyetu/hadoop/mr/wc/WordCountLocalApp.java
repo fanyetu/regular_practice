@@ -1,7 +1,6 @@
 package cn.fanyetu.hadoop.mr.wc;
 
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
@@ -10,17 +9,14 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 /**
  * Driver：配置Mapper，Reducer的相关属性
- * 提交到本地运行，开发过程中使用
  *
  * @author zhanghaonan
- * @date 2019/9/16
+ * @date 2019/9/17
  */
-public class WordCountApp {
+public class WordCountLocalApp {
 
     static {
         try {
@@ -32,20 +28,14 @@ public class WordCountApp {
         }
     }
 
-    public static void main(String[] args) throws Exception {
-
-        // 配置hadoop用户
-        System.setProperty("HADOOP_USER_NAME", "hadoop");
-
-        // 配置hdfs
+    public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
         Configuration configuration = new Configuration();
-        configuration.set("fs.defaultFS", "hdfs://192.168.1.136:8020");
 
         // 创建一个Job，并传入configuration
         Job job = Job.getInstance(configuration);
 
         // 设置Job相关的参数：主类
-        job.setJarByClass(WordCountApp.class);
+        job.setJarByClass(WordCountLocalApp.class);
 
         // 设置Job相关的参数：Mapper和Reducer对应的类
         job.setMapperClass(WordCountMapper.class);
@@ -59,16 +49,9 @@ public class WordCountApp {
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
 
-        // 判断输出路径是否存在，如果存在则删除
-        FileSystem fileSystem = FileSystem.get(new URI("hdfs://192.168.1.136:8020"), configuration, "hadoop");
-        Path output = new Path("/wordcount/output");
-        if (fileSystem.exists(output)) {
-            fileSystem.delete(output, true);
-        }
-
         // 设置输入和输出的文件
-        FileInputFormat.setInputPaths(job, new Path("/wordcount/input"));
-        FileOutputFormat.setOutputPath(job, output);
+        FileInputFormat.setInputPaths(job, new Path("input"));
+        FileOutputFormat.setOutputPath(job, new Path("output"));
 
         // 提交job
         boolean result = job.waitForCompletion(true);
