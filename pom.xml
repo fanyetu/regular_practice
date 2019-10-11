@@ -31,7 +31,7 @@
         <poi.version>3.11</poi.version>
         <shiro.version>1.2.2</shiro.version>
         <druid.version>1.0.18</druid.version>
-        <netty.version>4.1.8.Final</netty.version>
+        <netty.version>4.1.42.Final</netty.version>
         <cglib.version>2.2.2</cglib.version>
         <quartz.version>2.2.3</quartz.version>
         <kafka.version>0.10.0.0</kafka.version>
