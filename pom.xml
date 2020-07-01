@@ -33,7 +33,7 @@
         <druid.version>1.0.18</druid.version>
         <netty.version>4.1.8.Final</netty.version>
         <cglib.version>2.2.2</cglib.version>
-        <quartz.version>2.2.3</quartz.version>
+        <quartz.version>2.3.2</quartz.version>
         <kafka.version>0.10.0.0</kafka.version>
     </properties>
 
